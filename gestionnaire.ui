@@ -17,9 +17,9 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>50</y>
+     <y>60</y>
      <width>751</width>
-     <height>401</height>
+     <height>391</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -32,7 +32,7 @@
   <widget class="QTableWidget" name="tableWidget">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>20</x>
      <y>70</y>
      <width>541</width>
      <height>351</height>
@@ -178,7 +178,7 @@ border-radius:4px</string>
      <x>0</x>
      <y>0</y>
      <width>751</width>
-     <height>51</height>
+     <height>55</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -263,7 +263,27 @@ border-radius:4px</string>
     <string>Se Deconnecter</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="pushButton_5">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>10</y>
+     <width>44</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image:url(:/newPrefix/PFA Dev/icons8-personne-homme-40.png);
+background-repeat: no-repeat;
+background-color:rgb(13,12,60)</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../ferf.qrc"/>
+ </resources>
  <connections/>
 </ui>
