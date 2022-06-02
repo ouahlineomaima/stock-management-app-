@@ -67,7 +67,6 @@ class Ui_Form(object):
         self.passwordfield.setFont(font)
         self.passwordfield.setStyleSheet("border-radius:4px")
         self.passwordfield.setObjectName("passwordfield")
-        self.passwordfield.setEchoMode(QtWidgets.QLineEdit.Password)
         self.label_6 = QtWidgets.QLabel(Form)
         self.label_6.setGeometry(QtCore.QRect(10, 260, 111, 31))
         font = QtGui.QFont()
@@ -103,7 +102,7 @@ class Ui_Form(object):
         self.imageLabel = QtWidgets.QLabel(Form)
         self.imageLabel.setGeometry(QtCore.QRect(520, 30, 161, 141))
         self.imageLabel.setAutoFillBackground(False)
-        self.imageLabel.setStyleSheet("background-image:url(:/newPrefix/supermarket.png);\n"
+        self.imageLabel.setStyleSheet("background-image:url(:/newPrefix/supermarcher.jpg);\n"
                                       "border-radius:40px")
         self.imageLabel.setText("")
         self.imageLabel.setPixmap(QtGui.QPixmap(":/newPrefix/supermarket.png"))

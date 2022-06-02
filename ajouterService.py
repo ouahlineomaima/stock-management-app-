@@ -53,7 +53,7 @@ class Ui_Form(object):
         self.IdGestionnaireLabel.setStyleSheet("color:rgb(70,68,68)")
         self.IdGestionnaireLabel.setObjectName("IdGestionnaireLabel")
         self.pushButton_2 = QtWidgets.QPushButton(Form)
-        self.pushButton_2.setGeometry(QtCore.QRect(450, 290, 151, 31))
+        self.pushButton_2.setGeometry(QtCore.QRect(450, 310, 151, 31))
         font = QtGui.QFont()
         font.setPointSize(13)
         font.setBold(True)
@@ -71,7 +71,7 @@ class Ui_Form(object):
         self.idServiceLabel.setStyleSheet("color:rgb(70,68,68)")
         self.idServiceLabel.setObjectName("idServiceLabel")
         self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(150, 290, 151, 32))
+        self.pushButton.setGeometry(QtCore.QRect(150, 310, 151, 32))
         font = QtGui.QFont()
         font.setPointSize(13)
         font.setBold(True)
@@ -112,7 +112,7 @@ class Ui_Form(object):
         self.pushButton.setText(_translate("Form", "Valider"))
         self.label_3.setText(_translate("Form", "          Ajouter Un Service"))
 
-import ferf_rc
+
 
 if __name__ == "__main__":
     import sys
