@@ -67,6 +67,7 @@ class Ui_Form(object):
         self.passwordfield.setFont(font)
         self.passwordfield.setStyleSheet("border-radius:4px")
         self.passwordfield.setObjectName("passwordfield")
+        self.passwordfield.setEchoMode(QtWidgets.QLineEdit.Password)
         self.label_6 = QtWidgets.QLabel(Form)
         self.label_6.setGeometry(QtCore.QRect(10, 260, 111, 31))
         font = QtGui.QFont()
