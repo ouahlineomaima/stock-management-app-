@@ -66,7 +66,7 @@ class Ui_Form(object):
         self.prixLabel.setStyleSheet("color:rgb(70,68,68)")
         self.prixLabel.setObjectName("prixLabel")
         self.pushButton_2 = QtWidgets.QPushButton(Form)
-        self.pushButton_2.setGeometry(QtCore.QRect(450, 320, 151, 31))
+        self.pushButton_2.setGeometry(QtCore.QRect(450, 330, 151, 31))
         font = QtGui.QFont()
         font.setPointSize(13)
         font.setBold(True)
@@ -88,7 +88,7 @@ class Ui_Form(object):
         self.nomLabel.setStyleSheet("color:rgb(70,68,68)")
         self.nomLabel.setObjectName("nomLabel")
         self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(150, 320, 151, 32))
+        self.pushButton.setGeometry(QtCore.QRect(150, 330, 151, 32))
         font = QtGui.QFont()
         font.setPointSize(13)
         font.setBold(True)
@@ -135,7 +135,7 @@ class Ui_Form(object):
         self.pushButton.setText(_translate("Form", "Valider"))
         self.idProduitLabel.setText(_translate("Form", "ID Produit:"))
 
-import ferf_rc
+
 
 if __name__ == "__main__":
     import sys

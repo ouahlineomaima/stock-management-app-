@@ -6,9 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -22,7 +20,7 @@ class Ui_Form(object):
         font.setWeight(75)
         self.label.setFont(font)
         self.label.setStyleSheet("color:rgb(255, 255, 255);\n"
-                                 "background-color:rgb(13,12,60)")
+"background-color:rgb(13,12,60)")
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(Form)
         self.label_2.setGeometry(QtCore.QRect(0, 50, 751, 441))
@@ -86,34 +84,34 @@ class Ui_Form(object):
         self.adresseLabel.setStyleSheet("color:rgb(70,68,68)")
         self.adresseLabel.setObjectName("adresseLabel")
         self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(160, 350, 151, 32))
+        self.pushButton.setGeometry(QtCore.QRect(160, 370, 151, 32))
         font = QtGui.QFont()
         font.setPointSize(13)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton.setFont(font)
         self.pushButton.setStyleSheet("background-color:rgb(85, 255, 0);\n"
-                                      " color:rgb(255, 255, 255);\n"
-                                      "border-radius:4px")
+" color:rgb(255, 255, 255);\n"
+"border-radius:4px")
         self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = QtWidgets.QPushButton(Form)
-        self.pushButton_2.setGeometry(QtCore.QRect(440, 350, 151, 31))
+        self.pushButton_2.setGeometry(QtCore.QRect(390, 370, 151, 31))
         font = QtGui.QFont()
         font.setPointSize(13)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_2.setFont(font)
         self.pushButton_2.setStyleSheet("background-color:rgb(255, 197, 119);\n"
-                                        " color:rgb(255, 255, 255);\n"
-                                        "border-radius:4px")
+" color:rgb(255, 255, 255);\n"
+"border-radius:4px")
         self.pushButton_2.setObjectName("pushButton_2")
-        self.pushButton_3 = QtWidgets.QPushButton(Form)
-        self.pushButton_3.setGeometry(QtCore.QRect(690, 0, 44, 42))
-        self.pushButton_3.setStyleSheet("background-image:url(icons8-personne-homme-40.png);\n"
-                                        "background-repeat: no-repeat;\n"
-                                        "background-color:rgb(13,12,60)")
-        self.pushButton_3.setText("")
-        self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_7 = QtWidgets.QPushButton(Form)
+        self.pushButton_7.setGeometry(QtCore.QRect(690, 0, 44, 42))
+        self.pushButton_7.setStyleSheet("background-image:url(:/newPrefix/PFA Dev/icons8-personne-homme-40.png);\n"
+"background-repeat: no-repeat;\n"
+"background-color:rgb(13,12,60)")
+        self.pushButton_7.setText("")
+        self.pushButton_7.setObjectName("pushButton_7")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -121,8 +119,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.label.setText(_translate(
-            "Form", "          Ajouter Un Gestionnaire"))
+        self.label.setText(_translate("Form", "          Ajouter Un Gestionnaire"))
         self.nomLabel.setText(_translate("Form", "Nom Complet:"))
         self.TeleLabel.setText(_translate("Form", "Telephone:"))
         self.idLabel.setText(_translate("Form", "ID:"))
@@ -139,3 +136,4 @@ if __name__ == "__main__":
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
+

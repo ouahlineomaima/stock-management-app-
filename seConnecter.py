@@ -120,7 +120,7 @@ class Ui_Form(object):
         self.imageLabel = QtWidgets.QLabel(Form)
         self.imageLabel.setGeometry(QtCore.QRect(520, 30, 161, 141))
         self.imageLabel.setAutoFillBackground(False)
-        self.imageLabel.setStyleSheet("background-image:url(:/newPrefix/supermarket.png);\n"
+        self.imageLabel.setStyleSheet("background-image:url(:/newPrefix/supermarcher.jpg);\n"
                                       "border-radius:40px")
         self.imageLabel.setText("")
         self.imageLabel.setPixmap(QtGui.QPixmap(":/newPrefix/supermarket.png"))
