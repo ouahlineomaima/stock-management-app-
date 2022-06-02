@@ -6,6 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -85,7 +86,7 @@ class Ui_Form(object):
         self.adresseLabel.setStyleSheet("color:rgb(70,68,68)")
         self.adresseLabel.setObjectName("adresseLabel")
         self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(70, 360, 151, 32))
+        self.pushButton.setGeometry(QtCore.QRect(160, 350, 151, 32))
         font = QtGui.QFont()
         font.setPointSize(13)
         font.setBold(True)
@@ -96,7 +97,7 @@ class Ui_Form(object):
                                       "border-radius:4px")
         self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = QtWidgets.QPushButton(Form)
-        self.pushButton_2.setGeometry(QtCore.QRect(350, 360, 151, 31))
+        self.pushButton_2.setGeometry(QtCore.QRect(440, 350, 151, 31))
         font = QtGui.QFont()
         font.setPointSize(13)
         font.setBold(True)
