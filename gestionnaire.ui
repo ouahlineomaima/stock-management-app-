@@ -35,12 +35,12 @@
      <x>40</x>
      <y>70</y>
      <width>541</width>
-     <height>192</height>
+     <height>351</height>
     </rect>
    </property>
    <column>
     <property name="text">
-     <string>New Column</string>
+     <string>ID Service</string>
     </property>
     <property name="font">
      <font>
@@ -51,7 +51,7 @@
    </column>
    <column>
     <property name="text">
-     <string>ID Service</string>
+     <string>Nom</string>
     </property>
     <property name="font">
      <font>
