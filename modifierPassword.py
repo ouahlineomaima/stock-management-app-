@@ -122,6 +122,7 @@ class Ui_Form(object):
         self.passwordtextfield.setFont(font)
         self.passwordtextfield.setStyleSheet("border-radius:4px")
         self.passwordtextfield.setObjectName("passwordtextfield")
+        self.passwordtextfield.setEchoMode(QtWidgets.QLineEdit.Password)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
