@@ -18,14 +18,16 @@ def get_allgestionnaire():
         cursor, db = get_connection()
         request = "SELECT * FROM gestionnaire"
         cursor.execute(request)
-        while cursor.fetchone() is not None:
-            id, nom, tele, address, email, passwd = cursor.fetchone()
+        row = cursor.fetchone()
+        while row is not None:
+            id, nom, tele, address, email, passwd = row
             if id == "0000":
-                admin = Admin(nom, id, email, address, tele)
+                admin = Admin(nom, id, email, address, tele, passwd)
                 list_gestionnaire.append(admin)
             else:
-                gest = Gestionnaire(nom, id, email, address, tele)
+                gest = Gestionnaire(nom, id, email, address, tele, passwd)
                 list_gestionnaire.append(gest)
+        row = cursor.fetchone()
         cursor.close()
         return list_gestionnaire
     except mysql.connector.Error:
