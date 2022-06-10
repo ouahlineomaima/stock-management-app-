@@ -27,7 +27,7 @@ def get_allgestionnaire():
             else:
                 gest = Gestionnaire(nom, id, email, address, tele, passwd)
                 list_gestionnaire.append(gest)
-        row = cursor.fetchone()
+            row = cursor.fetchone()
         cursor.close()
         return list_gestionnaire
     except mysql.connector.Error:
@@ -40,14 +40,16 @@ def get_allservice():
         cursor, db = get_connection()
         request = "SELECT * FROM service"
         cursor.execute(request)
-        while cursor.fetchone() is not None:
-            id, nom, id_gest = cursor.fetchone()
-            gestionnaire = Gestionnaire()
+        row = cursor.fetchone()
+        while row is not None:
+            id, nom, id_gest = row
+            gestionnaire = get_gestionnaire(id_gest)
             for gest in get_allgestionnaire():
                 if gest.id == id_gest:
                     gestionnaire = gest
             service = Service(id, nom, gestionnaire)
             list_service.append(service)
+            row = cursor.fetchone()
         return list_service
     except mysql.connector.Error:
         return list_service
@@ -59,18 +61,43 @@ def get_allproduit(service):
         cursor, db = get_connection()
         request = f"SELECT * FROM produit WHERE service = {service.iD}"
         cursor.execute(request)
-        while cursor.fetchone() is not None:
-            id, nom, quantite, _, prix, mini, maxi = cursor.fetchone()
+        row = cursor.fetchone()
+        while row is not None:
+            id, nom, quantite, _, prix, mini, maxi = row
             produit = Produit(id, nom, int(quantite), int(mini), int(maxi), service, int(prix))
             list_produit.append(produit)
+            row = cursor.fetchone()
         return list_produit
     except mysql.connector.Error:
         return list_produit
 
 
+def get_gest_services(id_gest):
+    cursor, db = get_connection()
+    request = f"SELECT * FROM service WHERE idgestionnaire = {id_gest}"
+    cursor.execute(request)
+    servicelist = []
+    row = cursor.fetchone()
+    while row is not None:
+        id, nom, _ = row
+        gest = get_gestionnaire(id_gest)
+        service = Service(id, nom, gest)
+        servicelist.append(service)
+        row = cursor.fetchone()
+    cursor.close()
+    return servicelist
+
+
 def get_gestionnaire(id_gest):
     for gest in get_allgestionnaire():
         if gest.id == id_gest:
+            return gest
+    return None
+
+
+def get_gestionnaire_by_name(gest_name):
+    for gest in get_allgestionnaire():
+        if gest_name == gest.nom_complet:
             return gest
     return None
 
@@ -128,6 +155,41 @@ def modify_produit(new_produit, old_produit):
         return 1
     except mysql.connector.Error:
         return -1
+
+
+def ajouter_service(service):
+    cursor, db = get_connection()
+    request = "INSERT INTO service VALUES (%s, %s, %s)"
+    val = (service.iD, service.nom, service.gestionnaire.id)
+    cursor.execute(request, val)
+    db.commit()
+    return cursor.rowcount
+
+
+def affecter_service(gestionnaire, service):
+    return service.set_gestionnaire(gestionnaire)
+
+
+def supprimer_gestionnaire(gestionnaire):
+    cursor, db = get_connection()
+    request = "DEELET FROM gestionnaire WHERE idgestionnaire = %s"
+    val = gestionnaire.id
+    cursor.execute(request, val)
+    db.commit()
+    return cursor.rowcount
+
+
+def supprimer_service(serviceid):
+    try:
+        cursor, db = get_connection()
+        request = f"DELETE FROM `gestionstock`.`service` WHERE (`idservice` = '{serviceid}')"
+        cursor.execute(request)
+        db.commit()
+        return cursor.rowcount
+    except mysql.connector.Error as e:
+        return 0
+
+
 
 
 

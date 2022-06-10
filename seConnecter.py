@@ -11,9 +11,21 @@ from Data import *
 import hashlib
 import sys
 from PyQt5.QtWidgets import *
+import TableService
+import affichageGestionnaire
 
 
 class Ui_Form(object):
+    admin_first = False
+    gest_first = False
+    admin_index = 0
+    gest_index = 0
+
+    def __init__(self):
+        self.Form = QtWidgets.QWidget()
+        self.setupUi(self.Form)
+        self.gest = None
+
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(751, 491)
@@ -127,21 +139,68 @@ class Ui_Form(object):
         self.imageLabel.setScaledContents(True)
         self.imageLabel.setObjectName("imageLabel")
 
+        self.id = self.idfield.text()
+        self.nom = self.nomfield.text()
+        self.passwd = self.passwordfield.text()
+        self.gest = get_gestionnaire(self.id)
+
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def sign_in(self):
-        id = self.idfield.text()
-        nom = self.nomfield.text()
-        passwd = self.passwordfield.text()
-        gest = get_gestionnaire(id)
-        if gest is not None:
-            if nom == gest.nom_complet:
-                if hashlib.md5(passwd.encode()).hexdigest() == gest.password:
-                    if id == "0000":  # admin part
-                        pass
+        self.id = self.idfield.text()
+        self.nom = self.nomfield.text()
+        self.passwd = self.passwordfield.text()
+        self.gest = get_gestionnaire(self.id)
+        if self.gest is not None:
+            if self.nom == self.gest.nom_complet:
+                if hashlib.md5(self.passwd.encode()).hexdigest() == self.gest.password:
+                    if self.id == "0000":  # admin part
+                        self.idfield.setText("")
+                        self.nomfield.setText("")
+                        self.passwordfield.setText("")
+                        TableService.Ui_Form.widget = widget
+                        TableService.Ui_Form.loginheight = loginui.Form.frameGeometry().height()
+                        TableService.Ui_Form.loginwidth = loginui.Form.frameGeometry().width()
+                        adminui = TableService.Ui_Form()
+                        widget.addWidget(adminui.Form)
+                        if not Ui_Form.admin_first and not Ui_Form.gest_first:
+                            Ui_Form.admin_first = True
+                            Ui_Form.admin_index = 1
+                            Ui_Form.gest_index = 2
+
+                            widget.setFixedWidth(adminui.Form.frameGeometry().width())
+                            widget.setFixedHeight(adminui.Form.frameGeometry().height())
+                            widget.setCurrentIndex(Ui_Form.admin_index)
+                        else:
+                            widget.setFixedWidth(adminui.Form.frameGeometry().width())
+                            widget.setFixedHeight(adminui.Form.frameGeometry().height())
+                            widget.setCurrentIndex(Ui_Form.admin_index)
+
                     else:  # normal gest part
-                        pass
+                        self.idfield.setText("")
+                        self.nomfield.setText("")
+                        self.passwordfield.setText("")
+                        affichageGestionnaire.Ui_Form.gest_id = self.id
+                        affichageGestionnaire.Ui_Form.widget = widget
+                        #affichageGestionnaire.Ui_Form.widget.addWidget(loginui.Form)
+                        affichageGestionnaire.Ui_Form.loginheight = loginui.Form.frameGeometry().height()
+                        affichageGestionnaire.Ui_Form.loginwidth = loginui.Form.frameGeometry().width()
+                        gestui = affichageGestionnaire.Ui_Form()
+                        widget.addWidget(gestui.Form)
+                        if not Ui_Form.admin_first and not Ui_Form.gest_first:
+                            Ui_Form.gest_first = True
+                            Ui_Form.gest_index = 1
+                            Ui_Form.admin_index = 2
+
+                            widget.setFixedWidth(gestui.Form.frameGeometry().width())
+                            widget.setFixedHeight(gestui.Form.frameGeometry().height())
+                            widget.setCurrentIndex(Ui_Form.gest_index)
+                        else:
+                            widget.setFixedWidth(gestui.Form.frameGeometry().width())
+                            widget.setFixedHeight(gestui.Form.frameGeometry().height())
+                            widget.setCurrentIndex(Ui_Form.gest_index)
+
                 else:  # wrong passwd
                     msg = QMessageBox()
                     msg.setIcon(QMessageBox.Critical)
@@ -199,7 +258,7 @@ class Ui_Form(object):
         self.label_8.setText(_translate("Form", "Ou&Ta"))
         self.label_9.setText(_translate("Form", "Supermarket"))
 
-
+"""
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -208,3 +267,18 @@ if __name__ == "__main__":
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
+"""
+#if __name__ == "__main__":
+app = QApplication(sys.argv)
+widget = QtWidgets.QStackedWidget()
+
+loginui = Ui_Form()
+loginui.setupUi(loginui.Form)
+widget.addWidget(loginui.Form)
+
+
+widget.setFixedWidth(loginui.Form.frameGeometry().width())
+widget.setFixedHeight(loginui.Form.frameGeometry().height())
+
+widget.show()
+sys.exit(app.exec_())
