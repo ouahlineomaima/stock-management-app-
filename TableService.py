@@ -14,6 +14,7 @@ import serviceGestionnaire
 import ajouterService
 import Service
 import produitAdmin
+import profil
 
 
 def logout(self):
@@ -38,6 +39,7 @@ def go_to_gest():
     serviceGestionnaire.Ui_Form.widget = Ui_Form.widget
     serviceGestionnaire.Ui_Form.loginheight = Ui_Form.loginheight
     serviceGestionnaire.Ui_Form.loginwidth = Ui_Form.loginwidth
+    serviceGestionnaire.Ui_Form.gestid = Ui_Form.gestid
     tablegestui = serviceGestionnaire.Ui_Form()
     serviceGestionnaire.Ui_Form.serviceheight = tablegestui.Form.frameGeometry().height()
     serviceGestionnaire.Ui_Form.servicewidth = tablegestui.Form.frameGeometry().width()
@@ -150,6 +152,7 @@ def consult(self):
         produitAdmin.Ui_Form.previousindex = Ui_Form.widget.currentIndex()
         produitAdmin.Ui_Form.loginheight = Ui_Form.loginheight
         produitAdmin.Ui_Form.loginwidth = Ui_Form.loginwidth
+        produitAdmin.Ui_Form.gestid = Ui_Form.gestid
         showproduct = produitAdmin.Ui_Form()
         Ui_Form.widget.addWidget(showproduct.Form)
         Ui_Form.widget.setFixedWidth(showproduct.Form.frameGeometry().width())
@@ -172,10 +175,24 @@ def consult(self):
         retval = msg.exec_()
 
 
+def go_to_profil(self):
+    profil.Ui_Form.widget = Ui_Form.widget
+    profil.Ui_Form.previousheight = self.Form.frameGeometry().height()
+    profil.Ui_Form.previouswidth = self.Form.frameGeometry().width()
+    profil.Ui_Form.previousindex = Ui_Form.widget.currentIndex()
+    profil.Ui_Form.gestid = Ui_Form.gestid
+    profile = profil.Ui_Form()
+    Ui_Form.widget.addWidget(profile.Form)
+    Ui_Form.widget.setFixedWidth(profile.Form.frameGeometry().width())
+    Ui_Form.widget.setFixedHeight(profile.Form.frameGeometry().height())
+    Ui_Form.widget.setCurrentIndex(Ui_Form.widget.__len__() - 1)
+
+
 class Ui_Form(object):
     widget = ""
     loginheight = ""
     loginwidth = ""
+    gestid = "0000"
 
     def __init__(self):
         self.Form = QtWidgets.QWidget()
@@ -322,6 +339,7 @@ class Ui_Form(object):
 "background-color:rgb(13,12,60)")
         self.pushButton_5.setText("")
         self.pushButton_5.setObjectName("pushButton_5")
+        self.pushButton_5.clicked.connect(lambda: go_to_profil(self))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)

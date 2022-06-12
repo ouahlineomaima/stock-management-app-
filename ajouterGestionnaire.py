@@ -261,14 +261,6 @@ class Ui_Form(object):
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_2.clicked.connect(lambda: go_back())
 
-        self.pushButton_7 = QtWidgets.QPushButton(Form)
-        self.pushButton_7.setGeometry(QtCore.QRect(690, 0, 44, 42))
-        self.pushButton_7.setStyleSheet("background-image:url(:/newPrefix/PFA Dev/icons8-personne-homme-40.png);\n"
-"background-repeat: no-repeat;\n"
-"background-color:rgb(13,12,60)")
-        self.pushButton_7.setText("")
-        self.pushButton_7.setObjectName("pushButton_7")
-
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 

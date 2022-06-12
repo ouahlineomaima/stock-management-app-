@@ -8,6 +8,10 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from Data import *
+import ajouterProduit
+import ModifierProduitGestionnaire
+from PyQt5.QtWidgets import *
+import profil
 
 
 def loaddata(self):
@@ -39,6 +43,118 @@ def go_back():
     Ui_Form.widget.setCurrentIndex(Ui_Form.previousindex)
 
 
+def go_to_add_product(self):
+    ajouterProduit.Ui_Form.widget = Ui_Form.widget
+    ajouterProduit.Ui_Form.previousheight = self.Form.frameGeometry().height()
+    ajouterProduit.Ui_Form.previouswidth = self.Form.frameGeometry().width()
+    ajouterProduit.Ui_Form.previousindex = Ui_Form.widget.currentIndex()
+    ajouterProduit.Ui_Form.serviceid = Ui_Form.serviceid
+    addproduct = ajouterProduit.Ui_Form()
+    Ui_Form.widget.addWidget(addproduct.Form)
+    Ui_Form.widget.setFixedWidth(addproduct.Form.frameGeometry().width())
+    Ui_Form.widget.setFixedHeight(addproduct.Form.frameGeometry().height())
+    Ui_Form.widget.setCurrentIndex(Ui_Form.widget.__len__() - 1)
+
+
+def delete_product(self):
+    item = self.tableWidget.currentItem()
+    if item:
+        row = self.tableWidget.currentRow()
+        productid = self.tableWidget.item(row, 0).text()
+        y = delete_produit(productid)
+        if y == 1:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+
+            # setting message for Message Box
+            msg.setText("le produit a été supprimé avec succès.")
+
+            # setting Message box window title
+            msg.setWindowTitle("Opération réussie")
+
+            # declaring buttons on Message Box
+            msg.setStandardButtons(QMessageBox.Ok)
+
+            # start the app
+            retval = msg.exec_()
+        else:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+
+            # setting message for Message Box
+            msg.setText("Erreur de la connexion avec la base de données")
+
+            # setting Message box window title
+            msg.setWindowTitle("Opération échouée")
+
+            # declaring buttons on Message Box
+            msg.setStandardButtons(QMessageBox.Ok)
+
+            # start the app
+            retval = msg.exec_()
+    else:
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Critical)
+
+        # setting message for Message Box
+        msg.setText("Aucun produit sélectionné. Veuillez sélectionner un produit.")
+
+        # setting Message box window title
+        msg.setWindowTitle("Opération échouée")
+
+        # declaring buttons on Message Box
+        msg.setStandardButtons(QMessageBox.Ok)
+
+        # start the app
+        retval = msg.exec_()
+
+
+def go_to_modify_product(self):
+    item = self.tableWidget.currentItem()
+    if item:
+        row = self.tableWidget.currentRow()
+        productid = self.tableWidget.item(row, 0).text()
+        ModifierProduitGestionnaire.Ui_Form.widget = Ui_Form.widget
+        ModifierProduitGestionnaire.Ui_Form.previousheight = self.Form.frameGeometry().height()
+        ModifierProduitGestionnaire.Ui_Form.previouswidth = self.Form.frameGeometry().width()
+        ModifierProduitGestionnaire.Ui_Form.previousindex = Ui_Form.widget.currentIndex()
+        ModifierProduitGestionnaire.Ui_Form.serviceid = Ui_Form.serviceid
+        ModifierProduitGestionnaire.Ui_Form.productid = productid
+        modifyproduct = ModifierProduitGestionnaire.Ui_Form()
+        Ui_Form.widget.addWidget(modifyproduct.Form)
+        Ui_Form.widget.setFixedWidth(modifyproduct.Form.frameGeometry().width())
+        Ui_Form.widget.setFixedHeight(modifyproduct.Form.frameGeometry().height())
+        Ui_Form.widget.setCurrentIndex(Ui_Form.widget.__len__() - 1)
+    else:
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Critical)
+
+        # setting message for Message Box
+        msg.setText("Aucun produit sélectionné. Veuillez sélectionner un produit.")
+
+        # setting Message box window title
+        msg.setWindowTitle("Opération échouée")
+
+        # declaring buttons on Message Box
+        msg.setStandardButtons(QMessageBox.Ok)
+
+        # start the app
+        retval = msg.exec_()
+
+
+def go_to_profil(self):
+    profil.Ui_Form.widget = Ui_Form.widget
+    profil.Ui_Form.previousheight = self.Form.frameGeometry().height()
+    profil.Ui_Form.previouswidth = self.Form.frameGeometry().width()
+    profil.Ui_Form.previousindex = Ui_Form.widget.currentIndex()
+    profil.Ui_Form.gestid = Ui_Form.gestid
+    profile = profil.Ui_Form()
+    Ui_Form.widget.addWidget(profile.Form)
+    Ui_Form.widget.setFixedWidth(profile.Form.frameGeometry().width())
+    Ui_Form.widget.setFixedHeight(profile.Form.frameGeometry().height())
+    Ui_Form.widget.setCurrentIndex(Ui_Form.widget.__len__() - 1)
+
+
 class Ui_Form(object):
     widget = ""
     previousheight = ""
@@ -48,6 +164,7 @@ class Ui_Form(object):
     loginheight = ""
     myindex = ""
     serviceid = ""
+    gestid = ""
 
     def __init__(self):
         self.Form = QtWidgets.QWidget()
@@ -83,6 +200,7 @@ class Ui_Form(object):
                                       " color:rgb(255, 255, 255);\n"
                                       "border-radius:4px")
         self.pushButton.setObjectName("pushButton")
+        self.pushButton.clicked.connect(lambda: loaddata(self))
 
         self.pushButton_2 = QtWidgets.QPushButton(Form)
         self.pushButton_2.setGeometry(QtCore.QRect(739, 130, 151, 32))
@@ -95,6 +213,7 @@ class Ui_Form(object):
                                         " color:rgb(255, 255, 255);\n"
                                         "border-radius:4px")
         self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_2.clicked.connect(lambda: go_to_add_product(self))
 
         self.pushButton_3 = QtWidgets.QPushButton(Form)
         self.pushButton_3.setGeometry(QtCore.QRect(739, 170, 151, 32))
@@ -107,6 +226,7 @@ class Ui_Form(object):
                                         " color:rgb(255, 255, 255);\n"
                                         "border-radius:4px")
         self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_3.clicked.connect(lambda: delete_product(self))
 
         self.pushButton_4 = QtWidgets.QPushButton(Form)
         self.pushButton_4.setGeometry(QtCore.QRect(739, 210, 151, 32))
@@ -119,6 +239,7 @@ class Ui_Form(object):
                                         " color:rgb(255, 255, 255);\n"
                                         "border-radius:4px")
         self.pushButton_4.setObjectName("pushButton_4")
+        self.pushButton_4.clicked.connect(lambda: go_to_modify_product(self))
 
         self.tableWidget = QtWidgets.QTableWidget(Form)
         self.tableWidget.setGeometry(QtCore.QRect(10, 61, 721, 381))
@@ -186,7 +307,7 @@ class Ui_Form(object):
                                         " color:rgb(255, 255, 255);\n"
                                         "border-radius:4px")
         self.pushButton_5.setObjectName("pushButton_5")
-        self.pushButton_5.clicked.connect(logout)
+        self.pushButton_5.clicked.connect(lambda: go_back() )
 
         self.pushButton_6 = QtWidgets.QPushButton(Form)
         self.pushButton_6.setGeometry(QtCore.QRect(180, 10, 151, 32))
@@ -208,6 +329,7 @@ class Ui_Form(object):
                                         "background-color:rgb(13,12,60)")
         self.pushButton_7.setText("")
         self.pushButton_7.setObjectName("pushButton_7")
+        self.pushButton_7.clicked.connect(lambda: go_to_profil(self))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)

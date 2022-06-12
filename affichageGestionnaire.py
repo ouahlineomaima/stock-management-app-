@@ -11,6 +11,7 @@ from Data import *
 import sys
 from PyQt5.QtWidgets import *
 import produitGestionnaire
+import profil
 
 
 def logout(self):
@@ -31,6 +32,7 @@ def consult(self):
         produitGestionnaire.Ui_Form.previousindex = Ui_Form.widget.currentIndex()
         produitGestionnaire.Ui_Form.loginheight = Ui_Form.loginheight
         produitGestionnaire.Ui_Form.loginwidth = Ui_Form.loginwidth
+        produitGestionnaire.Ui_Form.gestid = Ui_Form.gest_id
         showproduct = produitGestionnaire.Ui_Form()
         Ui_Form.widget.addWidget(showproduct.Form)
         Ui_Form.widget.setFixedWidth(showproduct.Form.frameGeometry().width())
@@ -51,6 +53,22 @@ def consult(self):
 
         # start the app
         retval = msg.exec_()
+
+
+def go_to_profil(self):
+    try:
+        profil.Ui_Form.widget = Ui_Form.widget
+        profil.Ui_Form.previousheight = self.Form.frameGeometry().height()
+        profil.Ui_Form.previouswidth = self.Form.frameGeometry().width()
+        profil.Ui_Form.previousindex = Ui_Form.widget.currentIndex()
+        profil.Ui_Form.gestid = Ui_Form.gest_id
+        profile = profil.Ui_Form()
+        Ui_Form.widget.addWidget(profile.Form)
+        Ui_Form.widget.setFixedWidth(profile.Form.frameGeometry().width())
+        Ui_Form.widget.setFixedHeight(profile.Form.frameGeometry().height())
+        Ui_Form.widget.setCurrentIndex(Ui_Form.widget.__len__() - 1)
+    except BaseException as e:
+        print(e)
 
 
 class Ui_Form(object):
@@ -133,6 +151,7 @@ class Ui_Form(object):
 "background-color:rgb(13,12,60)")
         self.pushButton_7.setText("")
         self.pushButton_7.setObjectName("pushButton_7")
+        self.pushButton_7.clicked.connect(lambda: go_to_profil(self))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)

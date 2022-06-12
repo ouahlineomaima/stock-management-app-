@@ -190,14 +190,6 @@ class Ui_Form(object):
         item.setFont(font)
         self.tableWidget.setHorizontalHeaderItem(2, item)
 
-        self.pushButton_7 = QtWidgets.QPushButton(Form)
-        self.pushButton_7.setGeometry(QtCore.QRect(690, 0, 44, 42))
-        self.pushButton_7.setStyleSheet("background-image:url(:/newPrefix/PFA Dev/icons8-personne-homme-40.png);\n"
-                                        "background-repeat: no-repeat;\n"
-                                        "background-color:rgb(13,12,60)")
-        self.pushButton_7.setText("")
-        self.pushButton_7.setObjectName("pushButton_7")
-
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 

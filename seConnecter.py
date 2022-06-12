@@ -148,65 +148,81 @@ class Ui_Form(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def sign_in(self):
-        self.id = self.idfield.text()
-        self.nom = self.nomfield.text()
-        self.passwd = self.passwordfield.text()
-        self.gest = get_gestionnaire(self.id)
-        if self.gest is not None:
-            if self.nom == self.gest.nom_complet:
-                if hashlib.md5(self.passwd.encode()).hexdigest() == self.gest.password:
-                    if self.id == "0000":  # admin part
-                        self.idfield.setText("")
-                        self.nomfield.setText("")
-                        self.passwordfield.setText("")
-                        TableService.Ui_Form.widget = widget
-                        TableService.Ui_Form.loginheight = loginui.Form.frameGeometry().height()
-                        TableService.Ui_Form.loginwidth = loginui.Form.frameGeometry().width()
-                        adminui = TableService.Ui_Form()
-                        widget.addWidget(adminui.Form)
-                        if not Ui_Form.admin_first and not Ui_Form.gest_first:
-                            Ui_Form.admin_first = True
-                            Ui_Form.admin_index = 1
-                            Ui_Form.gest_index = 2
+        try:
+            self.id = self.idfield.text()
+            self.nom = self.nomfield.text()
+            self.passwd = self.passwordfield.text()
+            self.gest = get_gestionnaire(self.id)
+            if self.gest is not None:
+                if self.nom == self.gest.nom_complet:
+                    if hashlib.md5(self.passwd.encode()).hexdigest() == self.gest.password:
+                        if self.id == "0000":  # admin part
+                            self.idfield.setText("")
+                            self.nomfield.setText("")
+                            self.passwordfield.setText("")
+                            TableService.Ui_Form.widget = widget
+                            TableService.Ui_Form.loginheight = loginui.Form.frameGeometry().height()
+                            TableService.Ui_Form.loginwidth = loginui.Form.frameGeometry().width()
+                            adminui = TableService.Ui_Form()
+                            widget.addWidget(adminui.Form)
+                            if not Ui_Form.admin_first and not Ui_Form.gest_first:
+                                Ui_Form.admin_first = True
+                                Ui_Form.admin_index = 1
+                                Ui_Form.gest_index = 2
 
-                            widget.setFixedWidth(adminui.Form.frameGeometry().width())
-                            widget.setFixedHeight(adminui.Form.frameGeometry().height())
-                            widget.setCurrentIndex(Ui_Form.admin_index)
-                        else:
-                            widget.setFixedWidth(adminui.Form.frameGeometry().width())
-                            widget.setFixedHeight(adminui.Form.frameGeometry().height())
-                            widget.setCurrentIndex(Ui_Form.admin_index)
+                                widget.setFixedWidth(adminui.Form.frameGeometry().width())
+                                widget.setFixedHeight(adminui.Form.frameGeometry().height())
+                                widget.setCurrentIndex(Ui_Form.admin_index)
+                            else:
+                                widget.setFixedWidth(adminui.Form.frameGeometry().width())
+                                widget.setFixedHeight(adminui.Form.frameGeometry().height())
+                                widget.setCurrentIndex(Ui_Form.admin_index)
 
-                    else:  # normal gest part
-                        self.idfield.setText("")
-                        self.nomfield.setText("")
-                        self.passwordfield.setText("")
-                        affichageGestionnaire.Ui_Form.gest_id = self.id
-                        affichageGestionnaire.Ui_Form.widget = widget
-                        #affichageGestionnaire.Ui_Form.widget.addWidget(loginui.Form)
-                        affichageGestionnaire.Ui_Form.loginheight = loginui.Form.frameGeometry().height()
-                        affichageGestionnaire.Ui_Form.loginwidth = loginui.Form.frameGeometry().width()
-                        gestui = affichageGestionnaire.Ui_Form()
-                        widget.addWidget(gestui.Form)
-                        if not Ui_Form.admin_first and not Ui_Form.gest_first:
-                            Ui_Form.gest_first = True
-                            Ui_Form.gest_index = 1
-                            Ui_Form.admin_index = 2
+                        else:  # normal gest part
+                            self.idfield.setText("")
+                            self.nomfield.setText("")
+                            self.passwordfield.setText("")
+                            affichageGestionnaire.Ui_Form.gest_id = self.id
+                            affichageGestionnaire.Ui_Form.widget = widget
+                            #affichageGestionnaire.Ui_Form.widget.addWidget(loginui.Form)
+                            affichageGestionnaire.Ui_Form.loginheight = loginui.Form.frameGeometry().height()
+                            affichageGestionnaire.Ui_Form.loginwidth = loginui.Form.frameGeometry().width()
+                            gestui = affichageGestionnaire.Ui_Form()
+                            widget.addWidget(gestui.Form)
+                            if not Ui_Form.admin_first and not Ui_Form.gest_first:
+                                Ui_Form.gest_first = True
+                                Ui_Form.gest_index = 1
+                                Ui_Form.admin_index = 2
 
-                            widget.setFixedWidth(gestui.Form.frameGeometry().width())
-                            widget.setFixedHeight(gestui.Form.frameGeometry().height())
-                            widget.setCurrentIndex(Ui_Form.gest_index)
-                        else:
-                            widget.setFixedWidth(gestui.Form.frameGeometry().width())
-                            widget.setFixedHeight(gestui.Form.frameGeometry().height())
-                            widget.setCurrentIndex(Ui_Form.gest_index)
+                                widget.setFixedWidth(gestui.Form.frameGeometry().width())
+                                widget.setFixedHeight(gestui.Form.frameGeometry().height())
+                                widget.setCurrentIndex(Ui_Form.gest_index)
+                            else:
+                                widget.setFixedWidth(gestui.Form.frameGeometry().width())
+                                widget.setFixedHeight(gestui.Form.frameGeometry().height())
+                                widget.setCurrentIndex(Ui_Form.gest_index)
 
-                else:  # wrong passwd
+                    else:  # wrong passwd
+                        msg = QMessageBox()
+                        msg.setIcon(QMessageBox.Critical)
+
+                        # setting message for Message Box
+                        msg.setText("Mot de pass incorrect")
+
+                        # setting Message box window title
+                        msg.setWindowTitle("Opération échouée")
+
+                        # declaring buttons on Message Box
+                        msg.setStandardButtons(QMessageBox.Ok)
+
+                        # start the app
+                        retval = msg.exec_()
+                else:  # wrong name
                     msg = QMessageBox()
                     msg.setIcon(QMessageBox.Critical)
 
                     # setting message for Message Box
-                    msg.setText("Mot de pass incorrect")
+                    msg.setText("Nom incorrect")
 
                     # setting Message box window title
                     msg.setWindowTitle("Opération échouée")
@@ -216,12 +232,12 @@ class Ui_Form(object):
 
                     # start the app
                     retval = msg.exec_()
-            else:  # wrong name
+            else:  # wrong information
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Critical)
 
                 # setting message for Message Box
-                msg.setText("Nom incorrect")
+                msg.setText("Aucun gestionnaire ne correspond à l'id saisi")
 
                 # setting Message box window title
                 msg.setWindowTitle("Opération échouée")
@@ -231,21 +247,8 @@ class Ui_Form(object):
 
                 # start the app
                 retval = msg.exec_()
-        else:  # wrong information
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-
-            # setting message for Message Box
-            msg.setText("Aucun gestionnaire ne correspond à l'id saisi")
-
-            # setting Message box window title
-            msg.setWindowTitle("Opération échouée")
-
-            # declaring buttons on Message Box
-            msg.setStandardButtons(QMessageBox.Ok)
-
-            # start the app
-            retval = msg.exec_()
+        except BaseException as e:
+            print(e)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate

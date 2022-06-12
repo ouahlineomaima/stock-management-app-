@@ -7,14 +7,127 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from Data import *
+from Produit import *
+from PyQt5.QtWidgets import *
+
+
+def go_back():
+    Ui_Form.widget.setFixedWidth(Ui_Form.previouswidth)
+    Ui_Form.widget.setFixedHeight(Ui_Form.previousheight)
+    Ui_Form.widget.setCurrentIndex(Ui_Form.previousindex)
+
 
 def validate(self):
-    print("lineedit " +self.lineEdit.text())
-    print("lineedit2 " +self.lineEdit_2.text())
-    print("lineedit3 " +self.lineEdit_3.text())
-    print("lineedit4 " +self.lineEdit_4.text())
-    print("lineedit5 " +self.lineEdit_5.text())
-    print("lineedit6 " +self.lineEdit_6.text())
+    productid = self.lineEdit.text()
+    productname = self.lineEdit_2.text()
+    productqt = self.lineEdit_3.text()
+    productprice = self.lineEdit_4.text()
+    productmin = self.lineEdit_5.text()
+    productmax = self.lineEdit_6.text()
+    cursor, db = get_connection()
+    request = "SELECT idproduit FROM produit"
+    cursor.execute(request)
+    x = 0
+    list = cursor.fetchall()
+    try:
+        for i in range(len(list)):
+            id = list[i][0]
+            if id == productid:
+                x = 1
+                break
+    except BaseException as e:
+        print(e)
+    if x == 0:  # unique id
+        try:
+            if int(productqt) >= int(productmin) and int(productqt) <= int(productmax):
+                service = get_service(Ui_Form.serviceid)
+                product = Produit(productid, productname, productqt, productmin, productmax, service, productprice)
+                y = add_produit(product, service)
+                if y == 1:
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Information)
+
+                    # setting message for Message Box
+                    msg.setText("le produit a été ajouté avec succès")
+
+                    # setting Message box window title
+                    msg.setWindowTitle("Opération réussie")
+
+                    # declaring buttons on Message Box
+                    msg.setStandardButtons(QMessageBox.Ok)
+
+                    # start the app
+                    retval = msg.exec_()
+                    self.lineEdit.setText("")
+                    self.lineEdit_2.setText("")
+                    self.lineEdit_3.setText("")
+                    self.lineEdit_4.setText("")
+                    self.lineEdit_5.setText("")
+                    self.lineEdit_6.setText("")
+                else:
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Critical)
+
+                    # setting message for Message Box
+                    msg.setText("Erreur de la connexion avec la base de données")
+
+                    # setting Message box window title
+                    msg.setWindowTitle("Opération échouée")
+
+                    # declaring buttons on Message Box
+                    msg.setStandardButtons(QMessageBox.Ok)
+
+                    # start the app
+                    retval = msg.exec_()
+            else:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Critical)
+
+                # setting message for Message Box
+                msg.setText("Quantité invalide. Veuillez saisir une quantité entre le min et le max.")
+
+                # setting Message box window title
+                msg.setWindowTitle("Opération échouée")
+
+                # declaring buttons on Message Box
+                msg.setStandardButtons(QMessageBox.Ok)
+
+                # start the app
+                retval = msg.exec_()
+        except BaseException as e:
+            print(e)
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+
+            # setting message for Message Box
+            msg.setText("Valeur non entière pour la quantité, le minimum, le maximum, ou le prix.")
+
+            # setting Message box window title
+            msg.setWindowTitle("Opération échouée")
+
+            # declaring buttons on Message Box
+            msg.setStandardButtons(QMessageBox.Ok)
+
+            # start the app
+            retval = msg.exec_()
+    else:  # already existant id
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Critical)
+
+        # setting message for Message Box
+        msg.setText("L'id saisi figure déjà dans la base de données. Veuillez choisir un autre.")
+
+        # setting Message box window title
+        msg.setWindowTitle("Opération échouée")
+
+        # declaring buttons on Message Box
+        msg.setStandardButtons(QMessageBox.Ok)
+
+        # start the app
+        retval = msg.exec_()
+
+
 
 class Ui_Form(object):
     previousheight = ""
@@ -48,7 +161,7 @@ class Ui_Form(object):
 "background-color:rgb(13,12,60)")
         self.label_2.setObjectName("label_2")
 
-        self.lineEdit_2 = QtWidgets.QLineEdit(Form)
+        self.lineEdit_2 = QtWidgets.QLineEdit(Form)  #id
         self.lineEdit_2.setGeometry(QtCore.QRect(340, 131, 241, 31))
         font = QtGui.QFont()
         font.setPointSize(13)
@@ -57,7 +170,7 @@ class Ui_Form(object):
         self.lineEdit_2.setText("")
         self.lineEdit_2.setObjectName("lineEdit_2")
 
-        self.lineEdit_4 = QtWidgets.QLineEdit(Form)
+        self.lineEdit_4 = QtWidgets.QLineEdit(Form)  #prix
         self.lineEdit_4.setGeometry(QtCore.QRect(340, 233, 241, 31))
         font = QtGui.QFont()
         font.setPointSize(13)
@@ -66,7 +179,7 @@ class Ui_Form(object):
         self.lineEdit_4.setText("")
         self.lineEdit_4.setObjectName("lineEdit_4")
 
-        self.lineEdit_3 = QtWidgets.QLineEdit(Form)
+        self.lineEdit_3 = QtWidgets.QLineEdit(Form)  #qt
         self.lineEdit_3.setGeometry(QtCore.QRect(340, 182, 241, 31))
         font = QtGui.QFont()
         font.setPointSize(13)
@@ -106,6 +219,7 @@ class Ui_Form(object):
 "\n"
 "")
         self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_2.clicked.connect(lambda: go_back())
 
         self.nomLabel = QtWidgets.QLabel(Form)
         self.nomLabel.setGeometry(QtCore.QRect(159, 131, 111, 31))
@@ -179,14 +293,6 @@ class Ui_Form(object):
         self.maxLabel.setStyleSheet("color:rgb(70,68,68)")
         self.maxLabel.setObjectName("idProduitLabel")
 
-        self.pushButton_3 = QtWidgets.QPushButton(Form)
-        self.pushButton_3.setGeometry(QtCore.QRect(690, 0, 44, 42))
-        self.pushButton_3.setStyleSheet("background-image:url(:/newPrefix/PFA Dev/icons8-personne-homme-40.png);\n"
-"background-repeat: no-repeat;\n"
-"background-color:rgb(13,12,60)")
-        self.pushButton_3.setText("")
-        self.pushButton_3.setObjectName("pushButton_3")
-
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -194,7 +300,7 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label_2.setText(_translate("Form", "          Ajouter Un Produit"))
-        self.quantiteLabel.setText(_translate("Form", "Quanitite:"))
+        self.quantiteLabel.setText(_translate("Form", "Quantité:"))
         self.prixLabel.setText(_translate("Form", "Prix Unitaire:"))
         self.pushButton_2.setText(_translate("Form", "Retour"))
         self.nomLabel.setText(_translate("Form", "Nom:"))

@@ -11,6 +11,7 @@ from Data import *
 import ajouterGestionnaire
 from PyQt5.QtWidgets import *
 import affecterService
+import profil
 
 
 def loaddata(self):
@@ -155,6 +156,19 @@ def go_to_assign_manager(self):
         print(e)
 
 
+def go_to_profil(self):
+    profil.Ui_Form.widget = Ui_Form.widget
+    profil.Ui_Form.previousheight = self.Form.frameGeometry().height()
+    profil.Ui_Form.previouswidth = self.Form.frameGeometry().width()
+    profil.Ui_Form.previousindex = Ui_Form.widget.currentIndex()
+    profil.Ui_Form.gestid = Ui_Form.gestid
+    profile = profil.Ui_Form()
+    Ui_Form.widget.addWidget(profile.Form)
+    Ui_Form.widget.setFixedWidth(profile.Form.frameGeometry().width())
+    Ui_Form.widget.setFixedHeight(profile.Form.frameGeometry().height())
+    Ui_Form.widget.setCurrentIndex(Ui_Form.widget.__len__() - 1)
+
+
 class Ui_Form(object):
     widget = ""
     loginheight = ""
@@ -163,6 +177,7 @@ class Ui_Form(object):
     servicewidth = ""
     myindex = ""
     serviceindex = ""
+    gestid = ""
 
     def __init__(self):
         self.Form = QtWidgets.QWidget()
@@ -322,6 +337,7 @@ class Ui_Form(object):
                                         "background-color:rgb(13,12,60)")
         self.pushButton_5.setText("")
         self.pushButton_5.setObjectName("pushButton_5")
+        self.pushButton_5.clicked.connect(lambda: go_to_profil(self))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -329,7 +345,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.pushButton_7.setText(_translate("Form", "Gestionnaire"))
+        self.pushButton_7.setText(_translate("Form", "Gestionnaires"))
         self.pushButton_8.setText(_translate("Form", "Se Déconnecter"))
         self.pushButton_6.setText(_translate("Form", "Services"))
         self.pushButton_3.setText(_translate("Form", "Supprimer "))

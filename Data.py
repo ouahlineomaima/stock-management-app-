@@ -67,8 +67,14 @@ def get_allproduit(service):
             produit = Produit(id, nom, int(quantite), int(mini), int(maxi), service, int(prix))
             list_produit.append(produit)
             row = cursor.fetchone()
+        cursor.close()
+        """
+        for i in range(len(list_produit)):
+            print(list_produit[i].nom)
+        """
         return list_produit
-    except mysql.connector.Error:
+    except mysql.connector.Error as e:
+        print(e)
         return list_produit
 
 
@@ -110,10 +116,13 @@ def get_service(id_service):
 
 
 def get_produit(id_produit, service):
-    for produit in get_allproduit(service):
-        if produit.iD == id_produit:
-            return produit
-    return None
+    try:
+        for produit in get_allproduit(service):
+            if produit.iD == id_produit:
+                return produit
+        return None
+    except BaseException as e:
+        print(e)
 
 
 def add_produit(produit, service):
@@ -125,13 +134,12 @@ def add_produit(produit, service):
     if x == 0:
         try:
             cursor, db = get_connection()
-            request = f"""INSERT INTO produit VALUES ({produit.iD}, {produit.nom}, 
-                    {produit.quantite}, f{produit.service.iD}, {produit.prix},
-                    {produit.min}, {produit.max})"""
+            request = f"""INSERT INTO `gestionstock`.`produit` (`idproduit`, `nom`, `quantite`, `service`, `prix`, `min`, `max`) VALUES ('{produit.iD}', '{produit.nom}', '{produit.quantite}', '{produit.service.iD}', '{produit.prix}', '{produit.min}', '{produit.max}');"""
             cursor.execute(request)
             db.commit()
             return cursor.rowcount
-        except mysql.connector.Error:
+        except mysql.connector.Error as e:
+            print(e)
             return -1
     else:
         return -2
@@ -144,13 +152,14 @@ def delete_produit(idproduit):
         cursor.execute(request)
         db.commit()
         return cursor.rowcount
-    except mysql.connector.Error:
+    except mysql.connector.Error as e:
+        print(e)
         return -1
 
 
 def modify_produit(new_produit, old_produit):
     try:
-        delete_produit(old_produit)
+        delete_produit(old_produit.iD)
         add_produit(new_produit, old_produit.service)
         return 1
     except mysql.connector.Error:

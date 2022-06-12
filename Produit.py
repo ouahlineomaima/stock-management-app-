@@ -1,4 +1,5 @@
 import mysql.connector
+from PyQt5.QtWidgets import *
 
 # test commit and push
 
@@ -15,10 +16,12 @@ def get_allproduit(service):
         cursor, db = get_connection()
         request = f"SELECT * FROM produit WHERE service = {service.iD}"
         cursor.execute(request)
-        while cursor.fetchone() is not None:
-            id, nom, quantite, _, prix, mini, maxi = cursor.fetchone()
+        row = cursor.fetchone()
+        while row is not None:
+            id, nom, quantite, _, prix, mini, maxi = row
             produit = Produit(id, nom, int(quantite), int(mini), int(maxi), service, int(prix))
             list_produit.append(produit)
+            row = cursor.fetchone()
         return list_produit
     except mysql.connector.Error:
         return list_produit
@@ -34,19 +37,39 @@ def get_produit(id_produit, service):
 class Produit:
 
     def __init__(self, iD, nom, quantite, min, max, service, prix):
-        self.iD = iD
-        self.nom = nom
-        self.quantite = quantite
-        if not min:
-            self.min = 0
-        else:
-            self.min = min
-        if not max:
-            self.max = max
-        else:
-            self.max = max
-        self.service = service
-        self.prix = prix
+        try:
+            self.iD = iD
+            self.nom = nom
+            self.quantite = int(quantite)
+            if not min:
+                self.min = 0
+            else:
+                self.min = int(min)
+            if not max:
+                self.max = 100
+            else:
+                self.max = int(max)
+            self.service = service
+            try:
+                self.prix = float(prix)
+            except TypeError as e:
+                print(e)
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Critical)
+
+                # setting message for Message Box
+                msg.setText("Valeur de prix non rèelle. Veuillez saisir une valeur rèelle.")
+
+                # setting Message box window title
+                msg.setWindowTitle("Opération échouée")
+
+                # declaring buttons on Message Box
+                msg.setStandardButtons(QMessageBox.Ok)
+
+                # start the app
+                retval = msg.exec_()
+        except BaseException as e:
+            print(e)
 
     def set_service(self, service):
         try:
@@ -62,3 +85,11 @@ class Produit:
         product.quantite -= quantite
         cursor, db = get_connection()
         cursor.execute(f"update produit set quantite = {product.quantite} where idproduit = {product.iD}")
+
+    def __str__(self):
+        return self.nom
+
+    def __eq__(self, other):
+        if isinstance(other, Produit):
+            return self.iD == other.iD and self.nom == other.nom and self.quantite == other.quantite and self.min == other.min and self.max == other.max and self.service.iD == other.service.iD and self.prix == other.prix
+        return False
