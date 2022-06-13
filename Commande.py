@@ -7,8 +7,20 @@ class Commande:
         self.iD = iD
         self.produit = produit
 
-    def achat_produit(self, product):
-        produits = product.Keys()
-        quantites = product.Values()
-        for i in range(len(produits)):
-            produits[i].achat_produit(quantites[i])
+    def achat_produit(self):
+        try:
+            product = self.produit
+            produitss = product.keys()
+            produits = list(produitss)
+            quantitess = product.values()
+            quantites = list(quantitess)
+            for i in range(len(produits)):
+                produits[i].achat_produit(quantites[i])
+
+        except BaseException as e:
+            print("achat")
+            print(e)
+
+    def __hash__(self):
+        return hash(self.iD)
+

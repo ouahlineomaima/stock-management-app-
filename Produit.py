@@ -1,5 +1,7 @@
 import mysql.connector
 from PyQt5.QtWidgets import *
+import smtplib
+
 
 # test commit and push
 
@@ -81,10 +83,16 @@ class Produit:
             print(e.msg)
 
     def achat_produit(self, quantite):
-        product = get_produit(self.iD[6:])
-        product.quantite -= quantite
-        cursor, db = get_connection()
-        cursor.execute(f"update produit set quantite = {product.quantite} where idproduit = {product.iD}")
+        try:
+            product = get_produit(self.iD[6:], self.service)
+            product.quantite -= quantite
+            #if product.quantite - 5 < product.min:
+            cursor, db = get_connection()
+            cursor.execute(f"UPDATE `gestionstock`.`produit` SET `quantite` = '{product.quantite}' WHERE (`idproduit` = '{product.iD}')")
+            db.commit()
+            cursor.close()
+        except BaseException as e:
+            print(e)
 
     def __str__(self):
         return self.nom
@@ -93,3 +101,6 @@ class Produit:
         if isinstance(other, Produit):
             return self.iD == other.iD and self.nom == other.nom and self.quantite == other.quantite and self.min == other.min and self.max == other.max and self.service.iD == other.service.iD and self.prix == other.prix
         return False
+
+    def __hash__(self):
+        return hash(self.iD)

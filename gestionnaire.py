@@ -13,3 +13,6 @@ class Gestionnaire:
 
     def __str__(self):
         return self.nom_complet
+
+    def __hash__(self):
+        return hash(self.id)

@@ -3,6 +3,7 @@ from Produit import Produit
 from Gestionnaire import Gestionnaire
 from Admin import Admin
 from Service import Service
+from Commande import Commande
 # test commit and push
 
 
@@ -197,6 +198,42 @@ def supprimer_service(serviceid):
         return cursor.rowcount
     except mysql.connector.Error as e:
         return 0
+
+
+def commit_commande(commande):
+    try:
+        cursor, db = get_connection()
+        req = f"INSERT INTO `gestionstock`.`commande` (`idcommande`) VALUES ('{commande.iD}')"
+        cursor.execute(req)
+        db.commit()
+        cursor.close()
+        productss = commande.produit.keys()
+        products = list(productss)
+        qty = commande.produit.values()
+        qt = list(qty)
+        for i in range(len(products)):
+            req = f"INSERT INTO `gestionstock`.`acheter` (`idproduit`, `idcommande`, `quantite`, `prix`, `total`) VALUES ('{products[i].iD[6:]}', '{commande.iD}', '{qt[i]}', '{products[i].prix}', '{qt[i]*products[i].prix}')"
+            cursor, db = get_connection()
+            cursor.execute(req)
+            db.commit()
+            cursor.close()
+    except BaseException as e:
+        print(e)
+
+
+def get_last_commande_id():
+    try:
+        cursor, db = get_connection()
+        req = "SELECT * FROM gestionstock.commande ORDER BY idcommande DESC"
+        cursor.execute(req)
+        row = cursor.fetchone()
+        if not row:
+            id = 0
+        else:
+            id, = row
+        return id
+    except BaseException as e:
+        print(e)
 
 
 

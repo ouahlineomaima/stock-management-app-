@@ -25,3 +25,6 @@ class Service:
 
     def __str__(self):
         return self.nom
+
+    def __hash__(self):
+        return hash(self.iD)

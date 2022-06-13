@@ -114,7 +114,7 @@ class Ui_Form(object):
         self.pushButton.clicked.connect(self.sign_in)
 
         self.label_8 = QtWidgets.QLabel(Form)
-        self.label_8.setGeometry(QtCore.QRect(570, 220, 71, 20))
+        self.label_8.setGeometry(QtCore.QRect(570, 240, 71, 20))
         font = QtGui.QFont()
         font.setPointSize(16)
         self.label_8.setFont(font)
@@ -122,7 +122,7 @@ class Ui_Form(object):
         self.label_8.setObjectName("label_8")
 
         self.label_9 = QtWidgets.QLabel(Form)
-        self.label_9.setGeometry(QtCore.QRect(540, 240, 141, 41))
+        self.label_9.setGeometry(QtCore.QRect(540, 260, 141, 41))
         font = QtGui.QFont()
         font.setPointSize(16)
         self.label_9.setFont(font)
@@ -130,12 +130,12 @@ class Ui_Form(object):
         self.label_9.setObjectName("label_9")
 
         self.imageLabel = QtWidgets.QLabel(Form)
-        self.imageLabel.setGeometry(QtCore.QRect(520, 30, 161, 141))
+        self.imageLabel.setGeometry(QtCore.QRect(520, 90, 161, 141))
         self.imageLabel.setAutoFillBackground(False)
         self.imageLabel.setStyleSheet("background-image:url(:/newPrefix/supermarcher.jpg);\n"
                                       "border-radius:40px")
         self.imageLabel.setText("")
-        self.imageLabel.setPixmap(QtGui.QPixmap(":/newPrefix/supermarket.png"))
+        self.imageLabel.setPixmap(QtGui.QPixmap("D:\inpt\PFA\photos\logo.png"))
         self.imageLabel.setScaledContents(True)
         self.imageLabel.setObjectName("imageLabel")
 

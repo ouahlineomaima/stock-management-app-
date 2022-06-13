@@ -334,9 +334,7 @@ class Ui_Form(object):
 
         self.pushButton_5 = QtWidgets.QPushButton(Form)
         self.pushButton_5.setGeometry(QtCore.QRect(690, 10, 44, 42))
-        self.pushButton_5.setStyleSheet("background-image:url(:/newPrefix/PFA Dev/icons8-personne-homme-40.png);\n"
-"background-repeat: no-repeat;\n"
-"background-color:rgb(13,12,60)")
+        self.pushButton_5.setStyleSheet("background-image:url(D:\inpt\PFA\photos\profil1.png);\n")
         self.pushButton_5.setText("")
         self.pushButton_5.setObjectName("pushButton_5")
         self.pushButton_5.clicked.connect(lambda: go_to_profil(self))

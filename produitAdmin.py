@@ -148,17 +148,21 @@ def go_to_modify_product(self):
 
 
 def go_to_the_cart(self):
-    commandeProduit.Ui_Form.widget = Ui_Form.widget
-    commandeProduit.Ui_Form.previousheight = self.Form.frameGeometry().height()
-    commandeProduit.Ui_Form.previouswidth = self.Form.frameGeometry().width()
-    commandeProduit.Ui_Form.previousindex = Ui_Form.widget.currentIndex()
-    commandeProduit.Ui_Form.loginheight = Ui_Form.loginheight
-    commandeProduit.Ui_Form.loginwidth = Ui_Form.loginwidth
-    cart = commandeProduit.Ui_Form()
-    Ui_Form.widget.addWidget(cart.Form)
-    Ui_Form.widget.setFixedWidth(cart.Form.frameGeometry().width())
-    Ui_Form.widget.setFixedHeight(cart.Form.frameGeometry().height())
-    Ui_Form.widget.setCurrentIndex(Ui_Form.widget.__len__() - 1)
+    try:
+        commandeProduit.Ui_Form.widget = Ui_Form.widget
+        commandeProduit.Ui_Form.previousheight = self.Form.frameGeometry().height()
+        commandeProduit.Ui_Form.previouswidth = self.Form.frameGeometry().width()
+        commandeProduit.Ui_Form.previousindex = Ui_Form.widget.currentIndex()
+        commandeProduit.Ui_Form.loginheight = Ui_Form.loginheight
+        commandeProduit.Ui_Form.loginwidth = Ui_Form.loginwidth
+        commandeProduit.Ui_Form.gestid = Ui_Form.gestid
+        cart = commandeProduit.Ui_Form()
+        Ui_Form.widget.addWidget(cart.Form)
+        Ui_Form.widget.setFixedWidth(cart.Form.frameGeometry().width())
+        Ui_Form.widget.setFixedHeight(cart.Form.frameGeometry().height())
+        Ui_Form.widget.setCurrentIndex(Ui_Form.widget.__len__() - 1)
+    except BaseException as e:
+        print(e)
 
 
 def add_to_the_cart(self):

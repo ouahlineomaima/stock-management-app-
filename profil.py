@@ -155,8 +155,8 @@ class Ui_Form(object):
         self.pushButton = QtWidgets.QPushButton(Form)
         self.pushButton.setGeometry(QtCore.QRect(40, 80, 111, 111))
         self.pushButton.setAutoFillBackground(False)
-        self.pushButton.setStyleSheet("background-image:url(:/newPrefix/icons8-personne-homme-100.png);\n"
-                                      "background-color:url(icons8-personne-homme-40.png);\n"
+        self.pushButton.setStyleSheet("background-image:url(D:\inpt\PFA\photos\profil1.png);\n"
+                                      "background-color:url(D:\inpt\PFA\photos\profil1.png);\n"
                                       "background-repeat: no-repeat;")
         self.pushButton.setText("")
         self.pushButton.setObjectName("pushButton")

@@ -12,18 +12,20 @@ from Produit import *
 from PyQt5.QtWidgets import *
 from Service import *
 import profil
+from Commande import Commande
+import exporterCommande
+
 
 
 def loaddata(self):
     row = 0
-    print(Ui_Form.product_list[0].iD)
-    for product in Ui_Form.product_list:
-        print(1)
-        self.tableWidget.setItem(row, 0, QtWidgets.QTableWidgetItem(product.iD[6:]))
-        self.tableWidget.setItem(row, 1, QtWidgets.QTableWidgetItem(product.nom))
-        self.tableWidget.setItem(row, 2, QtWidgets.QTableWidgetItem(str(product.quantite)))
-        self.tableWidget.setItem(row, 3, QtWidgets.QTableWidgetItem(product.service.nom))
-        self.tableWidget.setItem(row, 4, QtWidgets.QTableWidgetItem(str(product.prix)))
+    self.tableWidget.setRowCount(len(Ui_Form.product_list))
+    for produit in Ui_Form.product_list:
+        self.tableWidget.setItem(row, 0, QtWidgets.QTableWidgetItem(produit.iD[6:]))
+        self.tableWidget.setItem(row, 1, QtWidgets.QTableWidgetItem(produit.nom))
+        self.tableWidget.setItem(row, 2, QtWidgets.QTableWidgetItem(str(produit.quantite)))
+        self.tableWidget.setItem(row, 3, QtWidgets.QTableWidgetItem(produit.service.nom))
+        self.tableWidget.setItem(row, 4, QtWidgets.QTableWidgetItem(str(produit.prix)))
         row += 1
 
 
@@ -41,16 +43,217 @@ def logout():
 
 
 def go_to_profil(self):
-    profil.Ui_Form.widget = Ui_Form.widget
-    profil.Ui_Form.previousheight = self.Form.frameGeometry().height()
-    profil.Ui_Form.previouswidth = self.Form.frameGeometry().width()
-    profil.Ui_Form.previousindex = Ui_Form.widget.currentIndex()
-    profil.Ui_Form.gestid = Ui_Form.gestid
-    profile = profil.Ui_Form()
-    Ui_Form.widget.addWidget(profile.Form)
-    Ui_Form.widget.setFixedWidth(profile.Form.frameGeometry().width())
-    Ui_Form.widget.setFixedHeight(profile.Form.frameGeometry().height())
-    Ui_Form.widget.setCurrentIndex(Ui_Form.widget.__len__() - 1)
+    try:
+        profil.Ui_Form.widget = Ui_Form.widget
+        profil.Ui_Form.previousheight = self.Form.frameGeometry().height()
+        profil.Ui_Form.previouswidth = self.Form.frameGeometry().width()
+        profil.Ui_Form.previousindex = Ui_Form.widget.currentIndex()
+        profil.Ui_Form.gestid = Ui_Form.gestid
+        profile = profil.Ui_Form()
+        Ui_Form.widget.addWidget(profile.Form)
+        Ui_Form.widget.setFixedWidth(profile.Form.frameGeometry().width())
+        Ui_Form.widget.setFixedHeight(profile.Form.frameGeometry().height())
+        Ui_Form.widget.setCurrentIndex(Ui_Form.widget.__len__() - 1)
+    except BaseException as e:
+        print(e)
+
+
+def remove_from_cart(self):
+    item = self.tableWidget.currentItem()
+    if item:
+        row = self.tableWidget.currentRow()
+        Ui_Form.product_list.pop(row)
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+
+        # setting message for Message Box
+        msg.setText("le produit a été retiré avec succès.")
+
+        # setting Message box window title
+        msg.setWindowTitle("Opération réussie")
+
+        # declaring buttons on Message Box
+        msg.setStandardButtons(QMessageBox.Ok)
+
+        # start the app
+        retval = msg.exec_()
+        loaddata(self)
+    else:
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Critical)
+
+        # setting message for Message Box
+        msg.setText("Aucun produit sélectionné. Veuillez sélectionner d'abord un produit.")
+
+        # setting Message box window title
+        msg.setWindowTitle("Opération échouée")
+
+        # declaring buttons on Message Box
+        msg.setStandardButtons(QMessageBox.Ok)
+
+        # start the app
+        retval = msg.exec_()
+
+
+def validate(self):
+    try:
+        if Ui_Form.product_list != []:
+            productmap = {}
+            for produit in Ui_Form.product_list:
+                productmap.update({produit: produit.quantite})
+            cmdid = int(get_last_commande_id()) + 1
+            cmd = Commande(cmdid, productmap)
+            cmd.achat_produit()
+            commit_commande(cmd)
+            Ui_Form.export_product_list = Ui_Form.product_list
+            Ui_Form.product_list = []
+            Ui_Form.validated = True
+            exporterCommande.Ui_Form.exported = False
+
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+
+            # setting message for Message Box
+            msg.setText("la commande a été validée avec succès.")
+
+            # setting Message box window title
+            msg.setWindowTitle("Opération réussie")
+
+            # declaring buttons on Message Box
+            msg.setStandardButtons(QMessageBox.Ok)
+
+            # start the app
+            retval = msg.exec_()
+            loaddata(self)
+        else:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+
+            # setting message for Message Box
+            msg.setText("la commande a déjà été validée.")
+
+            # setting Message box window title
+            msg.setWindowTitle("Opération échouée")
+
+            # declaring buttons on Message Box
+            msg.setStandardButtons(QMessageBox.Ok)
+
+            # start the app
+            retval = msg.exec_()
+            return
+
+    except BaseException as e:
+        print(e)
+
+
+def go_to_export(self):
+    try:
+        if Ui_Form.validated:
+            if not exporterCommande.Ui_Form.exported:
+                exporterCommande.Ui_Form.widget = Ui_Form.widget
+                exporterCommande.Ui_Form.previousheight = self.Form.frameGeometry().height()
+                exporterCommande.Ui_Form.previouswidth = self.Form.frameGeometry().width()
+                exporterCommande.Ui_Form.previousindex = Ui_Form.widget.currentIndex()
+                exporterCommande.Ui_Form.export_product_list = Ui_Form.export_product_list
+                export = exporterCommande.Ui_Form()
+                Ui_Form.widget.addWidget(export.Form)
+                Ui_Form.widget.setFixedWidth(export.Form.frameGeometry().width())
+                Ui_Form.widget.setFixedHeight(export.Form.frameGeometry().height())
+                Ui_Form.widget.setCurrentIndex(Ui_Form.widget.__len__() - 1)
+            else:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Critical)
+
+                # setting message for Message Box
+                msg.setText("Impossible d'exporter la commande. la commande a déjà été exportée.")
+
+                # setting Message box window title
+                msg.setWindowTitle("Opération échouée")
+
+                # declaring buttons on Message Box
+                msg.setStandardButtons(QMessageBox.Ok)
+
+                # start the app
+                retval = msg.exec_()
+                return
+        else:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+
+            # setting message for Message Box
+            msg.setText("Impossible d'exporter la commande. Veuillez la valider d'abord.")
+
+            # setting Message box window title
+            msg.setWindowTitle("Opération échouée")
+
+            # declaring buttons on Message Box
+            msg.setStandardButtons(QMessageBox.Ok)
+
+            # start the app
+            retval = msg.exec_()
+            return
+    except BaseException as e:
+        print("go to export")
+        print(e)
+
+
+def export(self):
+    try:
+        lastid = get_last_commande_id()
+        filename = f"commande{lastid}.txt"
+        total_global = 0
+        x = len(Ui_Form.export_product_list)
+        if x:
+            for i in range(x):
+                file = open(filename, "at")
+                nom = Ui_Form.export_product_list[i].nom
+                qt = Ui_Form.export_product_list[i].quantite
+                prix = Ui_Form.export_product_list[i].prix
+                total_unitaire = qt * prix
+                total_global += total_unitaire
+                service = Ui_Form.export_product_list[i].service.nom
+                msg = f"Produit N°{i}: {nom}, service: {service}, quantité: {qt}, prix unitaire: {prix}, prix total: {total_unitaire} \n"
+                file.write(msg)
+                file.close()
+            file = open(filename, "at")
+            msg = f"Total global: {total_global}"
+            file.write(msg)
+            file.close()
+            Ui_Form.export_product_list = []
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+
+            # setting message for Message Box
+            msg.setText("la commande a été exportée avec succès.")
+
+            # setting Message box window title
+            msg.setWindowTitle("Opération réussie")
+
+            # declaring buttons on Message Box
+            msg.setStandardButtons(QMessageBox.Ok)
+
+            # start the app
+            retval = msg.exec_()
+            return
+        else:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+
+            # setting message for Message Box
+            msg.setText("Impossible d'exporter la commande. Veuillez la valider d'abord.")
+
+            # setting Message box window title
+            msg.setWindowTitle("Opération échouée")
+
+            # declaring buttons on Message Box
+            msg.setStandardButtons(QMessageBox.Ok)
+
+            # start the app
+            retval = msg.exec_()
+            return
+    except BaseException as e:
+        print("export")
+        print(e)
 
 
 class Ui_Form(object):
@@ -59,13 +262,18 @@ class Ui_Form(object):
     widget = ""
     previousindex = ""
     product_list = []
+    export_product_list = []
     loginwidth = ""
     loginheight = ""
+    gestid = ""
+    validated = False
 
     def __init__(self):
         self.Form = QtWidgets.QWidget()
         self.setupUi(self.Form)
         loaddata(self)
+        if exporterCommande.clear() == 0:
+            Ui_Form.export_product_list = []
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -94,6 +302,7 @@ class Ui_Form(object):
 " color:rgb(255, 255, 255);\n"
 "border-radius:4px")
         self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_2.clicked.connect(lambda: go_to_export(self))
 
         self.pushButton_8 = QtWidgets.QPushButton(Form)
         self.pushButton_8.setGeometry(QtCore.QRect(207, 10, 111, 32))
@@ -122,7 +331,7 @@ class Ui_Form(object):
         self.pushButton_9.clicked.connect(lambda: logout())
 
         self.pushButton_3 = QtWidgets.QPushButton(Form)
-        self.pushButton_3.setGeometry(QtCore.QRect(560, 100, 181, 32))
+        self.pushButton_3.setGeometry(QtCore.QRect(565, 100, 181, 32))
         font = QtGui.QFont()
         font.setPointSize(11)
         font.setBold(True)
@@ -132,10 +341,10 @@ class Ui_Form(object):
 " color:rgb(255, 255, 255);\n"
 "border-radius:4px")
         self.pushButton_3.setObjectName("pushButton_3")
-        self.pushButton_3.clicked.connect(lambda: loaddata(self))
+        self.pushButton_3.clicked.connect(lambda: validate(self))
 
         self.pushButton_10 = QtWidgets.QPushButton(Form)
-        self.pushButton_10.setGeometry(QtCore.QRect(590, 140, 151, 32))
+        self.pushButton_10.setGeometry(QtCore.QRect(580, 140, 151, 32))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setBold(True)
@@ -145,6 +354,7 @@ class Ui_Form(object):
 " color:rgb(255, 255, 255);\n"
 "border-radius:4px")
         self.pushButton_10.setObjectName("pushButton_10")
+        self.pushButton_10.clicked.connect(lambda: remove_from_cart(self))
 
         self.tableWidget = QtWidgets.QTableWidget(Form)
         self.tableWidget.setGeometry(QtCore.QRect(10, 60, 551, 361))
@@ -158,34 +368,12 @@ class Ui_Form(object):
         self.tableWidget.setRowCount(0)
 
         item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(4, item)
-        """
-        self.tableWidget = QtWidgets.QTableWidget(Form)
-        self.tableWidget.setGeometry(QtCore.QRect(10, 60, 551, 361))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setWeight(75)
-        self.tableWidget.setFont(font)
-        self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(5)
-        self.tableWidget.setRowCount(0)
-
-        item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         item.setFont(font)
-        item.setBackground(QtGui.QColor(179, 178, 171))
+        #item.setBackground(QtGui.QColor(179, 178, 171))
         self.tableWidget.setHorizontalHeaderItem(0, item)
 
         item = QtWidgets.QTableWidgetItem()
@@ -194,7 +382,7 @@ class Ui_Form(object):
         font.setBold(True)
         font.setWeight(75)
         item.setFont(font)
-        item.setBackground(QtGui.QColor(179, 178, 171))
+        #item.setBackground(QtGui.QColor(179, 178, 171))
         self.tableWidget.setHorizontalHeaderItem(1, item)
 
         item = QtWidgets.QTableWidgetItem()
@@ -203,7 +391,7 @@ class Ui_Form(object):
         font.setBold(True)
         font.setWeight(75)
         item.setFont(font)
-        item.setBackground(QtGui.QColor(179, 178, 171))
+        #item.setBackground(QtGui.QColor(179, 178, 171))
         self.tableWidget.setHorizontalHeaderItem(2, item)
 
         item = QtWidgets.QTableWidgetItem()
@@ -212,7 +400,7 @@ class Ui_Form(object):
         font.setBold(True)
         font.setWeight(75)
         item.setFont(font)
-        item.setBackground(QtGui.QColor(179, 178, 171))
+        #item.setBackground(QtGui.QColor(179, 178, 171))
         self.tableWidget.setHorizontalHeaderItem(3, item)
 
         item = QtWidgets.QTableWidgetItem()
@@ -221,9 +409,8 @@ class Ui_Form(object):
         font.setBold(True)
         font.setWeight(75)
         item.setFont(font)
-        item.setBackground(QtGui.QColor(179, 178, 171))
+        #item.setBackground(QtGui.QColor(179, 178, 171))
         self.tableWidget.setHorizontalHeaderItem(4, item)
-        """
 
         self.pushButton_5 = QtWidgets.QPushButton(Form)
         self.pushButton_5.setGeometry(QtCore.QRect(690, 0, 44, 42))
