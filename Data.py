@@ -3,8 +3,6 @@ from Produit import Produit
 from Gestionnaire import Gestionnaire
 from Admin import Admin
 from Service import Service
-from Commande import Commande
-# test commit and push
 
 
 def get_connection():
@@ -17,7 +15,7 @@ def get_allgestionnaire():
     list_gestionnaire = []
     try:
         cursor, db = get_connection()
-        request = "SELECT * FROM gestionnaire"
+        request = "SELECT idgestionnaire, nomComplet, telephone, address, email, password FROM gestionnaire"
         cursor.execute(request)
         row = cursor.fetchone()
         while row is not None:
@@ -69,10 +67,6 @@ def get_allproduit(service):
             list_produit.append(produit)
             row = cursor.fetchone()
         cursor.close()
-        """
-        for i in range(len(list_produit)):
-            print(list_produit[i].nom)
-        """
         return list_produit
     except mysql.connector.Error as e:
         print(e)

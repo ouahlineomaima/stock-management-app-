@@ -1,7 +1,5 @@
 import mysql.connector
 
-# test commit and push
-
 
 def get_connection():
     db = mysql.connector.connect(host="localhost", user="root",

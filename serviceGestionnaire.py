@@ -1,12 +1,6 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'serviceGestionnaire.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 from Data import *
 import ajouterGestionnaire
 from PyQt5.QtWidgets import *
@@ -191,8 +185,14 @@ class Ui_Form(object):
         Form.setObjectName("Form")
         Form.resize(751, 451)
 
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setGeometry(QtCore.QRect(0, 50, 751, 401))
+        self.label.setStyleSheet("background-color:rgb(231, 231, 231)")
+        self.label.setText("")
+        self.label.setObjectName("label")
+
         self.label_2 = QtWidgets.QLabel(Form)
-        self.label_2.setGeometry(QtCore.QRect(0, 0, 751, 51))
+        self.label_2.setGeometry(QtCore.QRect(0, 0, 751, 55))
         self.label_2.setStyleSheet("background-color:rgb(13,12,60)")
         self.label_2.setText("")
         self.label_2.setObjectName("label_2")
@@ -204,7 +204,7 @@ class Ui_Form(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_7.setFont(font)
-        self.pushButton_7.setStyleSheet("background-color:rgb(217, 217, 217);\n"
+        self.pushButton_7.setStyleSheet("background-color:rgb(35, 193, 228);\n"
                                         " color:rgb(255, 255, 255);\n"
                                         "border-radius:4px")
         self.pushButton_7.setObjectName("pushButton_7")
@@ -229,17 +229,11 @@ class Ui_Form(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_6.setFont(font)
-        self.pushButton_6.setStyleSheet("background-color:rgb(35, 193, 228);\n"
+        self.pushButton_6.setStyleSheet("background-color:rgb(217, 217, 217);\n"
                                         " color:rgb(255, 255, 255);\n"
                                         "border-radius:4px")
         self.pushButton_6.setObjectName("pushButton_6")
         self.pushButton_6.clicked.connect(lambda: go_to_service())
-
-        self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(0, 50, 751, 401))
-        self.label.setStyleSheet("background-color:rgb(231, 231, 231)")
-        self.label.setText("")
-        self.label.setObjectName("label")
 
         self.pushButton_3 = QtWidgets.QPushButton(Form)
         self.pushButton_3.setGeometry(QtCore.QRect(590, 170, 151, 32))
@@ -331,12 +325,19 @@ class Ui_Form(object):
         self.tableWidget.setHorizontalHeaderItem(4, item)
 
         self.pushButton_5 = QtWidgets.QPushButton(Form)
-        self.pushButton_5.setGeometry(QtCore.QRect(690, 0, 44, 42))
-        self.pushButton_5.setStyleSheet("background-image:url(:/newPrefix/PFA Dev/icons8-personne-homme-40.png);\n"
-                                        "background-repeat: no-repeat;\n"
-                                        "background-color:rgb(13,12,60)")
-        self.pushButton_5.setText("")
+        self.pushButton_5.setGeometry(QtCore.QRect(590, 10, 150, 42))
+        font = QtGui.QFont()
+        font.setPointSize(15)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_5.setFont(font)
+        self.pushButton_5.setStyleSheet("background-color:rgb(35, 193, 228);\n"
+                                        " color:rgb(255, 255, 255);\n"
+                                        "border-radius:4px")
+        self.pushButton_5.setText("Profil")
         self.pushButton_5.setObjectName("pushButton_5")
+        self.pushButton_5.setIcon(QIcon("profil1.png"))
+        self.pushButton_5.setIconSize(QSize(50, 50))
         self.pushButton_5.clicked.connect(lambda: go_to_profil(self))
 
         self.retranslateUi(Form)
@@ -367,8 +368,6 @@ class Ui_Form(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    # Form = QtWidgets.QWidget()
     ui = Ui_Form()
-    # ui.setupUi(Form)
     ui.Form.show()
     sys.exit(app.exec_())

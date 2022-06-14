@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'ajouterProduit.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from Data import *
 from Produit import *
@@ -49,7 +41,7 @@ def validate(self):
                     msg.setIcon(QMessageBox.Information)
 
                     # setting message for Message Box
-                    msg.setText("le produit a été ajouté avec succès")
+                    msg.setText("le produit a été ajouté avec succès.")
 
                     # setting Message box window title
                     msg.setWindowTitle("Opération réussie")
@@ -126,7 +118,6 @@ def validate(self):
 
         # start the app
         retval = msg.exec_()
-
 
 
 class Ui_Form(object):
@@ -313,9 +304,7 @@ class Ui_Form(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    #Form = QtWidgets.QWidget()
     ui = Ui_Form()
-    #ui.setupUi(Form)
     ui.Form.show()
     sys.exit(app.exec_())
 

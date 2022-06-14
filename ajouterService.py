@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'ajouterService.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from Data import *
 from Service import *
@@ -72,7 +64,7 @@ def validate(self):
                 msg.setIcon(QMessageBox.Critical)
 
                 # setting message for Message Box
-                msg.setText("Aucun gestionnaire ne correspond à l'id saisi")
+                msg.setText("Aucun gestionnaire ne correspond à l'id saisi.")
 
                 # setting Message box window title
                 msg.setWindowTitle("Opération échouée")
@@ -219,14 +211,6 @@ class Ui_Form(object):
 "background-color:rgb(13,12,60)")
         self.label_3.setObjectName("label_3")
 
-       # self.pushButton_3 = QtWidgets.QPushButton(Form)
-       # self.pushButton_3.setGeometry(QtCore.QRect(690, 0, 44, 42))
-       #self.pushButton_3.setStyleSheet("background-image:url(:/newPrefix/PFA Dev/icons8-personne-homme-40.png);\n"
-#"background-repeat: no-repeat;\n"
-#"background-color:rgb(13,12,60)")
-       # self.pushButton_3.setText("")
-        #self.pushButton_3.setObjectName("pushButton_3")
-
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -244,9 +228,7 @@ class Ui_Form(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    #Form = QtWidgets.QWidget()
     ui = Ui_Form()
-    #ui.setupUi(Form)
     ui.Form.show()
     sys.exit(app.exec_())
 

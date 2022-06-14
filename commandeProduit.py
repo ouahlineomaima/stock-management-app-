@@ -1,20 +1,11 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'commandeProduit.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 from Data import *
-from Produit import *
 from PyQt5.QtWidgets import *
-from Service import *
 import profil
 from Commande import Commande
 import exporterCommande
-
 
 
 def loaddata(self):
@@ -193,66 +184,6 @@ def go_to_export(self):
             retval = msg.exec_()
             return
     except BaseException as e:
-        print("go to export")
-        print(e)
-
-
-def export(self):
-    try:
-        lastid = get_last_commande_id()
-        filename = f"commande{lastid}.txt"
-        total_global = 0
-        x = len(Ui_Form.export_product_list)
-        if x:
-            for i in range(x):
-                file = open(filename, "at")
-                nom = Ui_Form.export_product_list[i].nom
-                qt = Ui_Form.export_product_list[i].quantite
-                prix = Ui_Form.export_product_list[i].prix
-                total_unitaire = qt * prix
-                total_global += total_unitaire
-                service = Ui_Form.export_product_list[i].service.nom
-                msg = f"Produit N°{i}: {nom}, service: {service}, quantité: {qt}, prix unitaire: {prix}, prix total: {total_unitaire} \n"
-                file.write(msg)
-                file.close()
-            file = open(filename, "at")
-            msg = f"Total global: {total_global}"
-            file.write(msg)
-            file.close()
-            Ui_Form.export_product_list = []
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Information)
-
-            # setting message for Message Box
-            msg.setText("la commande a été exportée avec succès.")
-
-            # setting Message box window title
-            msg.setWindowTitle("Opération réussie")
-
-            # declaring buttons on Message Box
-            msg.setStandardButtons(QMessageBox.Ok)
-
-            # start the app
-            retval = msg.exec_()
-            return
-        else:
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-
-            # setting message for Message Box
-            msg.setText("Impossible d'exporter la commande. Veuillez la valider d'abord.")
-
-            # setting Message box window title
-            msg.setWindowTitle("Opération échouée")
-
-            # declaring buttons on Message Box
-            msg.setStandardButtons(QMessageBox.Ok)
-
-            # start the app
-            retval = msg.exec_()
-            return
-    except BaseException as e:
-        print("export")
         print(e)
 
 
@@ -286,7 +217,7 @@ class Ui_Form(object):
         self.label_2.setObjectName("label_2")
 
         self.label_3 = QtWidgets.QLabel(Form)
-        self.label_3.setGeometry(QtCore.QRect(0, 0, 751, 51))
+        self.label_3.setGeometry(QtCore.QRect(0, 0, 751, 55))
         self.label_3.setStyleSheet("background-color:rgb(13,12,60)")
         self.label_3.setText("")
         self.label_3.setObjectName("label_3")
@@ -373,7 +304,6 @@ class Ui_Form(object):
         font.setBold(True)
         font.setWeight(75)
         item.setFont(font)
-        #item.setBackground(QtGui.QColor(179, 178, 171))
         self.tableWidget.setHorizontalHeaderItem(0, item)
 
         item = QtWidgets.QTableWidgetItem()
@@ -382,7 +312,6 @@ class Ui_Form(object):
         font.setBold(True)
         font.setWeight(75)
         item.setFont(font)
-        #item.setBackground(QtGui.QColor(179, 178, 171))
         self.tableWidget.setHorizontalHeaderItem(1, item)
 
         item = QtWidgets.QTableWidgetItem()
@@ -391,7 +320,6 @@ class Ui_Form(object):
         font.setBold(True)
         font.setWeight(75)
         item.setFont(font)
-        #item.setBackground(QtGui.QColor(179, 178, 171))
         self.tableWidget.setHorizontalHeaderItem(2, item)
 
         item = QtWidgets.QTableWidgetItem()
@@ -400,7 +328,6 @@ class Ui_Form(object):
         font.setBold(True)
         font.setWeight(75)
         item.setFont(font)
-        #item.setBackground(QtGui.QColor(179, 178, 171))
         self.tableWidget.setHorizontalHeaderItem(3, item)
 
         item = QtWidgets.QTableWidgetItem()
@@ -409,16 +336,22 @@ class Ui_Form(object):
         font.setBold(True)
         font.setWeight(75)
         item.setFont(font)
-        #item.setBackground(QtGui.QColor(179, 178, 171))
         self.tableWidget.setHorizontalHeaderItem(4, item)
 
         self.pushButton_5 = QtWidgets.QPushButton(Form)
-        self.pushButton_5.setGeometry(QtCore.QRect(690, 0, 44, 42))
-        self.pushButton_5.setStyleSheet("background-image:url(:/newPrefix/PFA Dev/icons8-personne-homme-40.png);\n"
-"background-repeat: no-repeat;\n"
-"background-color:rgb(13,12,60)")
-        self.pushButton_5.setText("")
+        self.pushButton_5.setGeometry(QtCore.QRect(590, 10, 150, 42))
+        font = QtGui.QFont()
+        font.setPointSize(15)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_5.setFont(font)
+        self.pushButton_5.setStyleSheet("background-color:rgb(35, 193, 228);\n"
+                                        " color:rgb(255, 255, 255);\n"
+                                        "border-radius:4px")
+        self.pushButton_5.setText("Profil")
         self.pushButton_5.setObjectName("pushButton_5")
+        self.pushButton_5.setIcon(QIcon("profil1.png"))
+        self.pushButton_5.setIconSize(QSize(50, 50))
         self.pushButton_5.clicked.connect(lambda: go_to_profil(self))
 
         self.retranslateUi(Form)
@@ -446,9 +379,7 @@ class Ui_Form(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    #Form = QtWidgets.QWidget()
     ui = Ui_Form()
-    #ui.setupUi(Form)
     ui.Form.show()
     sys.exit(app.exec_())
 

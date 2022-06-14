@@ -1,16 +1,22 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'ajouterGestionnaire.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 from Data import *
-import Gestionnaire
 import hashlib
+import smtplib
+
+
+def send_email(msg, destination):
+    try:
+        sender_email = "OuTasupermarket@gmail.com"
+        password = "sfjtqhbqxcxhpqrt"
+        reciever_email = destination
+        server = smtplib.SMTP("smtp.gmail.com", 587, "127.0.0.1")
+        server.starttls()
+        server.login(sender_email, password)
+        server.sendmail(sender_email, reciever_email, msg)
+        server.quit()
+    except BaseException as e:
+        print(e)
 
 
 def go_back():
@@ -20,52 +26,73 @@ def go_back():
 
 
 def validate(self):
-    gestid = self.lineEdit.text()
-    gestname = self.lineEdit_2.text()
-    gesttele = self.lineEdit_3.text()
-    gestaddress = self.lineEdit_4.text()
-    gestemail = self.lineEdit_5.text()
-    gest = get_gestionnaire(gestid)
-    if gest is None:
-        x = 0
-        y = 0
-        for oldgest in get_allgestionnaire():
-            if gestname == oldgest.nom_complet:
-                x = 1
-                break
-            if gestemail == oldgest.email:
-                y = 1
-                break
-        if x == 0 and y == 0:
-            admin = get_gestionnaire("0000")
-            nonencodedpass = gestid + gestname
-            passwd = hashlib.md5(nonencodedpass.encode()).hexdigest()
-            if admin.ajouter_gestionnaire(gestid, gestname, gesttele, gestaddress, gestemail, passwd) == 1:  # all is good
-                self.lineEdit.setText("")
-                self.lineEdit_2.setText("")
-                self.lineEdit_3.setText("")
-                self.lineEdit_4.setText("")
-                self.lineEdit_5.setText("")
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Information)
+    try:
+        gestid = self.lineEdit.text()
+        gestname = self.lineEdit_2.text()
+        gesttele = self.lineEdit_3.text()
+        gestaddress = self.lineEdit_4.text()
+        gestemail = self.lineEdit_5.text()
+        gest = get_gestionnaire(gestid)
+        if gest is None:
+            x = 0
+            for oldgest in get_allgestionnaire():
+                if gestname == oldgest.nom_complet:
+                    x = 1
+                    break
+            if x == 0:
+                admin = get_gestionnaire("0000")
+                nonencodedpass = gestid + gestname
+                passwd = hashlib.md5(nonencodedpass.encode()).hexdigest()
+                if admin.ajouter_gestionnaire(gestid, gestname, gesttele, gestaddress, gestemail, passwd) == 1:  # all is good
+                    message = f"""Congratulation {gestname}
+Vous etes desormais partie de l'equipe OuTa supermarket.
+votre id {gestid}
+votre password par default {gestid + gestname}
+Veuillez changer votre password par default le plus tot possible.
+Cordialement,"""
+                    destination = gestemail
+                    send_email(message, destination)
+                    self.lineEdit.setText("")
+                    self.lineEdit_2.setText("")
+                    self.lineEdit_3.setText("")
+                    self.lineEdit_4.setText("")
+                    self.lineEdit_5.setText("")
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Information)
 
-                # setting message for Message Box
-                msg.setText("le gestionnaire a été ajouté avec succès")
+                    # setting message for Message Box
+                    msg.setText("le gestionnaire a été ajouté avec succès")
 
-                # setting Message box window title
-                msg.setWindowTitle("Opération réussie")
+                    # setting Message box window title
+                    msg.setWindowTitle("Opération réussie")
 
-                # declaring buttons on Message Box
-                msg.setStandardButtons(QMessageBox.Ok)
+                    # declaring buttons on Message Box
+                    msg.setStandardButtons(QMessageBox.Ok)
 
-                # start the app
-                retval = msg.exec_()
-            else:  # database connection error
+                    # start the app
+                    retval = msg.exec_()
+                else:  # database connection error
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Critical)
+
+                    # setting message for Message Box
+                    msg.setText("Erreur de la connexion avec la base de données")
+
+                    # setting Message box window title
+                    msg.setWindowTitle("Opération échouée")
+
+                    # declaring buttons on Message Box
+                    msg.setStandardButtons(QMessageBox.Ok)
+
+                    # start the app
+                    retval = msg.exec_()
+
+            else:  # name or email already existent
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Critical)
 
                 # setting message for Message Box
-                msg.setText("Erreur de la connexion avec la base de données")
+                msg.setText("Le nom saisi figure déjà dans la base de données. Veuillez saisir un autre nom.")
 
                 # setting Message box window title
                 msg.setWindowTitle("Opération échouée")
@@ -75,53 +102,23 @@ def validate(self):
 
                 # start the app
                 retval = msg.exec_()
+        else:  # id already existent
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
 
-        else:  # name or email already existent
-            if x == 1:
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Critical)
+            # setting message for Message Box
+            msg.setText("L'id saisi figure déjà dans la base de données. Veuillez choisir un autre id.")
 
-                # setting message for Message Box
-                msg.setText("Le nom saisi figure déjà dans la base de données. Veuillez choisir un autre nom")
+            # setting Message box window title
+            msg.setWindowTitle("Opération échouée")
 
-                # setting Message box window title
-                msg.setWindowTitle("Opération échouée")
+            # declaring buttons on Message Box
+            msg.setStandardButtons(QMessageBox.Ok)
 
-                # declaring buttons on Message Box
-                msg.setStandardButtons(QMessageBox.Ok)
-
-                # start the app
-                retval = msg.exec_()
-            if y == 1:
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Critical)
-
-                # setting message for Message Box
-                msg.setText("L'e-mail saisi figure déjà dans la base de données. Veuillez choisir un autre email")
-
-                # setting Message box window title
-                msg.setWindowTitle("Opération échouée")
-
-                # declaring buttons on Message Box
-                msg.setStandardButtons(QMessageBox.Ok)
-
-                # start the app
-                retval = msg.exec_()
-    else:  # id already existent
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Critical)
-
-        # setting message for Message Box
-        msg.setText("L'id saisi figure déjà dans la base de données. Veuillez choisir un autre id.")
-
-        # setting Message box window title
-        msg.setWindowTitle("Opération échouée")
-
-        # declaring buttons on Message Box
-        msg.setStandardButtons(QMessageBox.Ok)
-
-        # start the app
-        retval = msg.exec_()
+            # start the app
+            retval = msg.exec_()
+    except BaseException as e:
+        print(e)
 
 
 class Ui_Form(object):
@@ -280,9 +277,7 @@ class Ui_Form(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    #Form = QtWidgets.QWidget()
     ui = Ui_Form()
-    #ui.setupUi(Form)
     ui.Form.show()
     sys.exit(app.exec_())
 

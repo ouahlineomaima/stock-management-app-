@@ -3,7 +3,18 @@ from PyQt5.QtWidgets import *
 import smtplib
 
 
-# test commit and push
+def send_email(msg, destination):
+    try:
+        sender_email = "OuTasupermarket@gmail.com"
+        password = "sfjtqhbqxcxhpqrt"
+        reciever_email = destination
+        server = smtplib.SMTP("smtp.gmail.com", 587, "127.0.0.1")
+        server.starttls()
+        server.login(sender_email, password)
+        server.sendmail(sender_email, reciever_email, msg)
+        server.quit()
+    except BaseException as e:
+        print(e)
 
 
 def get_connection():
@@ -86,7 +97,14 @@ class Produit:
         try:
             product = get_produit(self.iD[6:], self.service)
             product.quantite -= quantite
-            #if product.quantite - 5 < product.min:
+            if product.quantite - 5 < product.min:
+                service = product.service
+                gest = service.gestionnaire
+                destination = gest.email
+                nom = product.nom
+                message = f"""le stock disponible du produit {nom} dans le service {service} est proche du minimum. 
+Veuillez ajouter ce produit."""
+                send_email(message, destination)
             cursor, db = get_connection()
             cursor.execute(f"UPDATE `gestionstock`.`produit` SET `quantite` = '{product.quantite}' WHERE (`idproduit` = '{product.iD}')")
             db.commit()

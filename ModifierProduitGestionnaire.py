@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'ModifierProduitGestionnaire.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from Data import *
 from Produit import *
@@ -177,6 +169,7 @@ def validate(self):
     except BaseException as e:
         print(e)
 
+
 class Ui_Form(object):
     previousheight = ""
     previouswidth = ""
@@ -345,8 +338,6 @@ class Ui_Form(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    #Form = QtWidgets.QWidget()
     ui = Ui_Form()
-    #ui.setupUi(Form)
     ui.Form.show()
     sys.exit(app.exec_())

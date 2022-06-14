@@ -1,14 +1,9 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'gestionnaire.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+import sys
 from Data import *
-from PyQt5.QtWidgets import  *
+from PyQt5.QtWidgets import *
 import sys
 import serviceGestionnaire
 import ajouterService
@@ -163,7 +158,7 @@ def consult(self):
         msg.setIcon(QMessageBox.Critical)
 
         # setting message for Message Box
-        msg.setText("Aucun service sélectionné.Veuillez sélectionner d'abord un service.")
+        msg.setText("Aucun service sélectionné. Veuillez sélectionner d'abord un service.")
 
         # setting Message box window title
         msg.setWindowTitle("Opération échouée")
@@ -333,10 +328,19 @@ class Ui_Form(object):
         self.pushButton_8.clicked.connect(logout)
 
         self.pushButton_5 = QtWidgets.QPushButton(Form)
-        self.pushButton_5.setGeometry(QtCore.QRect(690, 10, 44, 42))
-        self.pushButton_5.setStyleSheet("background-image:url(D:\inpt\PFA\photos\profil1.png);\n")
-        self.pushButton_5.setText("")
+        self.pushButton_5.setGeometry(QtCore.QRect(590, 10, 150, 42))
+        font = QtGui.QFont()
+        font.setPointSize(15)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_5.setFont(font)
+        self.pushButton_5.setStyleSheet("background-color:rgb(35, 193, 228);\n"
+" color:rgb(255, 255, 255);\n"
+"border-radius:4px")
+        self.pushButton_5.setText("Profil")
         self.pushButton_5.setObjectName("pushButton_5")
+        self.pushButton_5.setIcon(QIcon("profil1.png"))
+        self.pushButton_5.setIconSize(QSize(50, 50))
         self.pushButton_5.clicked.connect(lambda: go_to_profil(self))
 
         self.retranslateUi(Form)
@@ -363,8 +367,6 @@ class Ui_Form(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    #Form = QtWidgets.QWidget()
     ui = Ui_Form()
-    #ui.setupUi(Form)
     ui.Form.show()
     sys.exit(app.exec_())

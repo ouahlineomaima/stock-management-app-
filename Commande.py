@@ -1,6 +1,3 @@
-# test commit and push
-
-
 class Commande:
 
     def __init__(self, iD, produit):
@@ -16,9 +13,7 @@ class Commande:
             quantites = list(quantitess)
             for i in range(len(produits)):
                 produits[i].achat_produit(quantites[i])
-
         except BaseException as e:
-            print("achat")
             print(e)
 
     def __hash__(self):

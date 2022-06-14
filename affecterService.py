@@ -1,16 +1,6 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'affecterService.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from Data import *
 from PyQt5.QtWidgets import *
-from Admin import Admin
-import Gestionnaire
 
 
 def loaddata(self):
@@ -36,12 +26,11 @@ def validate(self):
         if gest.id == "0000":
             item = self.tableWidget.currentItem()
             if item is not None:
-
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Information)
 
                 # setting message for Message Box
-                msg.setText("Le service a été affecter avec succès à ")
+                msg.setText("Le service a été affecter avec succès à l'admin")
 
                 # setting Message box window title
                 msg.setWindowTitle("Opération réussie")
@@ -59,7 +48,7 @@ def validate(self):
                 msg.setIcon(QMessageBox.Critical)
 
                 # setting message for Message Box
-                msg.setText("Aucun service sélectionné.Veuillez d'abord sélectionner un service.")
+                msg.setText("Aucun service sélectionné. Veuillez d'abord sélectionner un service.")
 
                 # setting Message box window title
                 msg.setWindowTitle("Opération échouée")
@@ -75,6 +64,20 @@ def validate(self):
                 row = self.tableWidget.currentRow()
                 serviceid = self.tableWidget.item(row, 0).text()
                 if serviceid != "00":
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Information)
+
+                    # setting message for Message Box
+                    msg.setText("Le service a été affecter avec succès à "+gest.nom_complet)
+
+                    # setting Message box window title
+                    msg.setWindowTitle("Opération réussie")
+
+                    # declaring buttons on Message Box
+                    msg.setStandardButtons(QMessageBox.Ok)
+
+                    # start the app
+                    retval = msg.exec_()
                     service = get_service(serviceid)
                     service.set_gestionnaire(gest)
                 else:  # we can't assign default service to other managers than admin
@@ -171,6 +174,9 @@ class Ui_Form(object):
         self.tableWidget.setColumnCount(3)
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setRowCount(0)
+        self.tableWidget.setColumnWidth(0, 116)
+        self.tableWidget.setColumnWidth(1, 232)
+        self.tableWidget.setColumnWidth(2, 233)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setBold(True)
@@ -209,8 +215,6 @@ class Ui_Form(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    #Form = QtWidgets.QWidget()
     ui = Ui_Form()
-    #ui.setupUi(Form)
     ui.Form.show()
     sys.exit(app.exec_())

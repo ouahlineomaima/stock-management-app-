@@ -1,12 +1,6 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'modifierPassword.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 from Data import *
 from PyQt5.QtWidgets import *
 import hashlib
@@ -38,7 +32,7 @@ def validate(self):
             msg.setIcon(QMessageBox.Critical)
 
             # setting message for Message Box
-            msg.setText("Veuillez saisir d'abord un nom.")
+            msg.setText("Veuillez saisir d'abord un mot de pass.")
 
             # setting Message box window title
             msg.setWindowTitle("Opération échouée")
@@ -74,7 +68,7 @@ def validate(self):
             msg.setIcon(QMessageBox.Information)
 
             # setting message for Message Box
-            msg.setText("Votre nom a été changé avec succès.")
+            msg.setText("Votre mot de pass a été changé avec succès.")
 
             # setting Message box window title
             msg.setWindowTitle("Opération réussie")
@@ -95,6 +89,7 @@ class Ui_Form(object):
     previouswidth = ""
     previousindex = ""
     gestid = ""
+    picpath = ""
 
     def __init__(self):
         self.Form = QtWidgets.QWidget()
@@ -216,21 +211,24 @@ class Ui_Form(object):
         self.adresseLabel.setFont(font)
         self.adresseLabel.setObjectName("adresseLabel")
 
-        self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(40, 80, 111, 111))
-        self.pushButton.setAutoFillBackground(False)
-        self.pushButton.setStyleSheet("background-image:url(:/newPrefix/icons8-personne-homme-100.png);\n"
-                                      "background-color:url(icons8-personne-homme-40.png);\n"
-                                      "background-repeat: no-repeat;")
-        self.pushButton.setText("")
-        self.pushButton.setObjectName("pushButton")
+        self.imageLabel = QtWidgets.QLabel(Form)
+        self.imageLabel.setGeometry(QtCore.QRect(40, 80, 111, 111))
+        self.imageLabel.setAutoFillBackground(False)
+        self.imageLabel.setStyleSheet("border-radius:40px")
+        self.imageLabel.setText("")
+        self.imageLabel.setPixmap(QtGui.QPixmap(Ui_Form.picpath))
+        self.imageLabel.setScaledContents(True)
+        self.imageLabel.setFixedHeight(111)
+        self.imageLabel.setFixedWidth(111)
+        self.imageLabel.setObjectName("imageLabel")
 
         self.pushButton_2 = QtWidgets.QPushButton(Form)
         self.pushButton_2.setGeometry(QtCore.QRect(630, 320, 26, 26))
-        self.pushButton_2.setStyleSheet(
-            "background-image:url(:/newPrefix/icons8-coche-23.png);")
+        self.pushButton_2.setStyleSheet("background-color:rgb(240, 240, 240);")
         self.pushButton_2.setText("")
         self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_2.setIcon(QIcon("validate.png"))
+        self.pushButton_2.setIconSize(QSize(26, 26))
         self.pushButton_2.clicked.connect(lambda: validate(self))
 
         self.passwordtextfield = QtWidgets.QLineEdit(Form)
@@ -279,8 +277,6 @@ class Ui_Form(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
     ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
+    ui.Form.show()
     sys.exit(app.exec_())

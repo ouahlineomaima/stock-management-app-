@@ -1,12 +1,6 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'produitGestionnaire.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 from Data import *
 import ajouterProduit
 import ModifierProduitGestionnaire
@@ -178,13 +172,13 @@ class Ui_Form(object):
         Form.resize(898, 453)
 
         self.label_2 = QtWidgets.QLabel(Form)
-        self.label_2.setGeometry(QtCore.QRect(0, 0, 898, 51))
+        self.label_2.setGeometry(QtCore.QRect(0, 0, 898, 55))
         self.label_2.setStyleSheet("background-color:rgb(13,12,60)")
         self.label_2.setText("")
         self.label_2.setObjectName("label_2")
 
         self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(0, 50, 898, 453))
+        self.label.setGeometry(QtCore.QRect(0, 55, 898, 453))
         self.label.setStyleSheet("background-color:rgb(231, 231, 231)")
         self.label.setText("")
         self.label.setObjectName("label")
@@ -307,7 +301,7 @@ class Ui_Form(object):
                                         " color:rgb(255, 255, 255);\n"
                                         "border-radius:4px")
         self.pushButton_5.setObjectName("pushButton_5")
-        self.pushButton_5.clicked.connect(lambda: go_back() )
+        self.pushButton_5.clicked.connect(lambda: go_back())
 
         self.pushButton_6 = QtWidgets.QPushButton(Form)
         self.pushButton_6.setGeometry(QtCore.QRect(180, 10, 151, 32))
@@ -323,12 +317,19 @@ class Ui_Form(object):
         self.pushButton_6.clicked.connect(logout)
 
         self.pushButton_7 = QtWidgets.QPushButton(Form)
-        self.pushButton_7.setGeometry(QtCore.QRect(839, 0, 44, 42))
-        self.pushButton_7.setStyleSheet("background-image:url(:/newPrefix/PFA Dev/icons8-personne-homme-40.png);\n"
-                                        "background-repeat: no-repeat;\n"
-                                        "background-color:rgb(13,12,60)")
-        self.pushButton_7.setText("")
-        self.pushButton_7.setObjectName("pushButton_7")
+        self.pushButton_7.setGeometry(QtCore.QRect(737, 8, 150, 42))
+        font = QtGui.QFont()
+        font.setPointSize(15)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_7.setFont(font)
+        self.pushButton_7.setStyleSheet("background-color:rgb(35, 193, 228);\n"
+                                        " color:rgb(255, 255, 255);\n"
+                                        "border-radius:4px")
+        self.pushButton_7.setText("Profil")
+        self.pushButton_7.setObjectName("pushButton_5")
+        self.pushButton_7.setIcon(QIcon("profil1.png"))
+        self.pushButton_7.setIconSize(QSize(50, 50))
         self.pushButton_7.clicked.connect(lambda: go_to_profil(self))
 
         self.retranslateUi(Form)
@@ -362,8 +363,6 @@ class Ui_Form(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-   # Form = QtWidgets.QWidget()
     ui = Ui_Form()
-    #ui.setupUi(Form)
     ui.Form.show()
     sys.exit(app.exec_())

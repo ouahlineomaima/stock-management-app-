@@ -1,28 +1,32 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'profil.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 from Data import *
 import modifierNom
 import ModifierTele
 import modifierAdresse
 import modifierEmail
 import modifierPassword
+import modifierPic
 
 
 def loaddata(self):
-    gest = get_gestionnaire(Ui_Form.gestid)
-    self.adresseLabel.setText(gest.address)
-    self.teleLabel.setText(gest.telephone)
-    self.passLabel.setText("*"*10)
-    self.emailLabel.setText(gest.email)
-    self.idlabel.setText(Ui_Form.gestid)
-    self.nomLabel.setText(gest.nom_complet)
+    try:
+        gest = get_gestionnaire(Ui_Form.gestid)
+        self.adresseLabel.setText(gest.address)
+        self.teleLabel.setText(gest.telephone)
+        self.passLabel.setText("*"*10)
+        self.emailLabel.setText(gest.email)
+        self.idlabel.setText(Ui_Form.gestid)
+        self.nomLabel.setText(gest.nom_complet)
+        Ui_Form.startcheck = modifierPic.Ui_Form.validatepressed
+        get_pic_path()
+        self.imageLabel.setPixmap(QtGui.QPixmap(Ui_Form.picpath))
+        if Ui_Form.startcheck:
+            check_pic_path(self)
+            change_pic(self)
+    except Exception as e:
+        print(e)
 
 
 def go_back():
@@ -38,6 +42,7 @@ def go_to_modify_name(self):
         modifierNom.Ui_Form.previouswidth = self.Form.frameGeometry().width()
         modifierNom.Ui_Form.previousindex = self.widget.currentIndex()
         modifierNom.Ui_Form.gestid = Ui_Form.gestid
+        modifierNom.Ui_Form.picpath = Ui_Form.picpath
         modifyname = modifierNom.Ui_Form()
         Ui_Form.widget.addWidget(modifyname.Form)
         Ui_Form.widget.setFixedWidth(modifyname.Form.frameGeometry().width())
@@ -54,6 +59,7 @@ def go_to_modify_tele(self):
         ModifierTele.Ui_Form.previouswidth = self.Form.frameGeometry().width()
         ModifierTele.Ui_Form.previousindex = self.widget.currentIndex()
         ModifierTele.Ui_Form.gestid = Ui_Form.gestid
+        ModifierTele.Ui_Form.picpath = Ui_Form.picpath
         modifytele = ModifierTele.Ui_Form()
         Ui_Form.widget.addWidget(modifytele.Form)
         Ui_Form.widget.setFixedWidth(modifytele.Form.frameGeometry().width())
@@ -70,6 +76,7 @@ def go_to_modify_address(self):
         modifierAdresse.Ui_Form.previouswidth = self.Form.frameGeometry().width()
         modifierAdresse.Ui_Form.previousindex = self.widget.currentIndex()
         modifierAdresse.Ui_Form.gestid = Ui_Form.gestid
+        modifierAdresse.Ui_Form.picpath = Ui_Form.picpath
         modifyaddress = modifierAdresse.Ui_Form()
         Ui_Form.widget.addWidget(modifyaddress.Form)
         Ui_Form.widget.setFixedWidth(modifyaddress.Form.frameGeometry().width())
@@ -86,6 +93,7 @@ def go_to_modify_email(self):
         modifierEmail.Ui_Form.previouswidth = self.Form.frameGeometry().width()
         modifierEmail.Ui_Form.previousindex = self.widget.currentIndex()
         modifierEmail.Ui_Form.gestid = Ui_Form.gestid
+        modifierEmail.Ui_Form.picpath = Ui_Form.picpath
         modifyemail = modifierEmail.Ui_Form()
         Ui_Form.widget.addWidget(modifyemail.Form)
         Ui_Form.widget.setFixedWidth(modifyemail.Form.frameGeometry().width())
@@ -102,6 +110,7 @@ def go_to_modify_pswd(self):
         modifierPassword.Ui_Form.previouswidth = self.Form.frameGeometry().width()
         modifierPassword.Ui_Form.previousindex = self.widget.currentIndex()
         modifierPassword.Ui_Form.gestid = Ui_Form.gestid
+        modifierPassword.Ui_Form.picpath = Ui_Form.picpath
         modifypswd = modifierPassword.Ui_Form()
         Ui_Form.widget.addWidget(modifypswd.Form)
         Ui_Form.widget.setFixedWidth(modifypswd.Form.frameGeometry().width())
@@ -109,6 +118,65 @@ def go_to_modify_pswd(self):
         Ui_Form.widget.setCurrentIndex(Ui_Form.widget.__len__() - 1)
     except BaseException as e:
         print(e)
+
+
+def change_pic(self):
+    try:
+        self.imageLabel.setPixmap(QtGui.QPixmap(Ui_Form.picpath))
+        store_pic_path(self)
+    except BaseException as e:
+        print(e)
+
+
+def check_pic_path(self):
+    try:
+        if modifierPic.Ui_Form.goodpath:
+            Ui_Form.picpath = modifierPic.Ui_Form.picpath
+    except BaseException as e:
+        print(e)
+
+
+def go_to_modify_pic(self):
+    try:
+        modifierPic.Ui_Form.widget = Ui_Form.widget
+        modifierPic.Ui_Form.previousheight = self.Form.frameGeometry().height()
+        modifierPic.Ui_Form.previouswidth = self.Form.frameGeometry().width()
+        modifierPic.Ui_Form.previousindex = self.widget.currentIndex()
+        modifierPic.Ui_Form.gestid = Ui_Form.gestid
+        modifierPic.Ui_Form.goodpath = False
+        modifierPic.Ui_Form.picpath = Ui_Form.picpath
+        modifypic = modifierPic.Ui_Form()
+        Ui_Form.widget.addWidget(modifypic.Form)
+        Ui_Form.widget.setFixedWidth(modifypic.Form.frameGeometry().width())
+        Ui_Form.widget.setFixedHeight(modifypic.Form.frameGeometry().height())
+        Ui_Form.widget.setCurrentIndex(Ui_Form.widget.__len__() - 1)
+    except BaseException as e:
+        print(e)
+
+
+def store_pic_path(self):
+    cursor, db = get_connection()
+    req = f"UPDATE `gestionstock`.`gestionnaire` SET `path` = '{Ui_Form.picpath}' WHERE (`idgestionnaire` = '{Ui_Form.gestid}')"
+    cursor.execute(req)
+    db.commit()
+    cursor.close()
+
+
+def get_pic_path():
+    try:
+        cursor, db = get_connection()
+        req = f"SELECT path FROM `gestionstock`.`gestionnaire` WHERE (`idgestionnaire` = '{Ui_Form.gestid}')"
+        cursor.execute(req)
+        row = cursor.fetchone()
+        path, = row
+        if path is None:
+            Ui_Form.picpath = "profil1.png"
+        else:
+            Ui_Form.picpath = path
+        cursor.close()
+    except Exception:
+        Ui_Form.picpath = "profil1.png"
+        print("get")
 
 
 class Ui_Form(object):
@@ -119,6 +187,8 @@ class Ui_Form(object):
     loginwidth = ""
     loginheight = ""
     gestid = ""
+    picpath = "profil1.png"
+    startcheck = False
 
     def __init__(self):
         self.Form = QtWidgets.QWidget()
@@ -152,14 +222,25 @@ class Ui_Form(object):
                                    "background-color:rgb(13,12,60)")
         self.label_20.setObjectName("label_20")
 
-        self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(40, 80, 111, 111))
-        self.pushButton.setAutoFillBackground(False)
-        self.pushButton.setStyleSheet("background-image:url(D:\inpt\PFA\photos\profil1.png);\n"
-                                      "background-color:url(D:\inpt\PFA\photos\profil1.png);\n"
-                                      "background-repeat: no-repeat;")
-        self.pushButton.setText("")
-        self.pushButton.setObjectName("pushButton")
+        self.imageLabel = QtWidgets.QLabel(Form)
+        self.imageLabel.setGeometry(QtCore.QRect(40, 80, 111, 111))
+        self.imageLabel.setAutoFillBackground(False)
+        self.imageLabel.setStyleSheet("border-radius:40px")
+        self.imageLabel.setText("")
+        self.imageLabel.setPixmap(QtGui.QPixmap(Ui_Form.picpath))
+        self.imageLabel.setFixedHeight(111)
+        self.imageLabel.setFixedWidth(111)
+        self.imageLabel.setScaledContents(True)
+        self.imageLabel.setObjectName("imageLabel")
+
+        self.modifierpicbtn = QtWidgets.QPushButton(Form)
+        self.modifierpicbtn.setGeometry(QtCore.QRect(130, 190, 26, 26))
+        self.modifierpicbtn.setStyleSheet("background-color:rgb(240, 240, 240)")
+        self.modifierpicbtn.setText("")
+        self.modifierpicbtn.setObjectName("modifierpicbt")
+        self.modifierpicbtn.setIcon(QIcon("modify.png"))
+        self.modifierpicbtn.setIconSize(QSize(26, 26))
+        self.modifierpicbtn.clicked.connect(lambda: go_to_modify_pic(self))
 
         self.label_3 = QtWidgets.QLabel(Form)
         self.label_3.setGeometry(QtCore.QRect(200, 120, 121, 31))
@@ -267,7 +348,7 @@ class Ui_Form(object):
         self.passLabel.setObjectName("passLabel")
 
         self.emailLabel = QtWidgets.QLabel(Form)
-        self.emailLabel.setGeometry(QtCore.QRect(370, 280, 180, 31))
+        self.emailLabel.setGeometry(QtCore.QRect(370, 280, 200, 31))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.emailLabel.setFont(font)
@@ -275,42 +356,47 @@ class Ui_Form(object):
 
         self.modifierNombt = QtWidgets.QPushButton(Form)
         self.modifierNombt.setGeometry(QtCore.QRect(600, 160, 26, 26))
-        self.modifierNombt.setStyleSheet(
-            "background-image:url(:/newPrefix/icons8-crayon-23.png)")
+        self.modifierNombt.setStyleSheet("background-color:rgb(240, 240, 240)")
         self.modifierNombt.setText("")
         self.modifierNombt.setObjectName("modifierNombt")
+        self.modifierNombt.setIcon(QIcon("modify.png"))
+        self.modifierNombt.setIconSize(QSize(26, 26))
         self.modifierNombt.clicked.connect(lambda: go_to_modify_name(self))
 
         self.modifierAdresseBt = QtWidgets.QPushButton(Form)
         self.modifierAdresseBt.setGeometry(QtCore.QRect(600, 240, 26, 26))
-        self.modifierAdresseBt.setStyleSheet(
-            "background-image:url(:/newPrefix/icons8-crayon-23.png)")
+        self.modifierAdresseBt.setStyleSheet("background-color:rgb(240, 240, 240)")
         self.modifierAdresseBt.setText("")
         self.modifierAdresseBt.setObjectName("modifierAdresseBt")
+        self.modifierAdresseBt.setIcon(QIcon("modify.png"))
+        self.modifierAdresseBt.setIconSize(QSize(26, 26))
         self.modifierAdresseBt.clicked.connect(lambda: go_to_modify_address(self))
 
         self.modifierTeelbt = QtWidgets.QPushButton(Form)
         self.modifierTeelbt.setGeometry(QtCore.QRect(600, 200, 26, 26))
-        self.modifierTeelbt.setStyleSheet(
-            "background-image:url(:/newPrefix/icons8-crayon-23.png)")
+        self.modifierTeelbt.setStyleSheet("background-color:rgb(240, 240, 240)")
         self.modifierTeelbt.setText("")
         self.modifierTeelbt.setObjectName("modifierTeelbt")
+        self.modifierTeelbt.setIcon(QIcon("modify.png"))
+        self.modifierTeelbt.setIconSize(QSize(26, 26))
         self.modifierTeelbt.clicked.connect(lambda: go_to_modify_tele(self))
 
         self.modifierpasswordbt = QtWidgets.QPushButton(Form)
         self.modifierpasswordbt.setGeometry(QtCore.QRect(600, 320, 26, 26))
-        self.modifierpasswordbt.setStyleSheet(
-            "background-image:url(:/newPrefix/icons8-crayon-23.png)")
+        self.modifierpasswordbt.setStyleSheet("background-color:rgb(240, 240, 240)")
         self.modifierpasswordbt.setText("")
         self.modifierpasswordbt.setObjectName("modifierpasswordbt")
+        self.modifierpasswordbt.setIcon(QIcon("modify.png"))
+        self.modifierpasswordbt.setIconSize(QSize(26, 26))
         self.modifierpasswordbt.clicked.connect(lambda: go_to_modify_pswd(self))
 
         self.modifierEmailbt = QtWidgets.QPushButton(Form)
         self.modifierEmailbt.setGeometry(QtCore.QRect(600, 280, 26, 26))
-        self.modifierEmailbt.setStyleSheet(
-            "background-image:url(:/newPrefix/icons8-crayon-23.png)")
+        self.modifierEmailbt.setStyleSheet("background-color:rgb(240, 240, 240)")
         self.modifierEmailbt.setText("")
         self.modifierEmailbt.setObjectName("modifierEmailbt")
+        self.modifierEmailbt.setIcon(QIcon("modify.png"))
+        self.modifierEmailbt.setIconSize(QSize(26, 26))
         self.modifierEmailbt.clicked.connect(lambda: go_to_modify_email(self))
 
         self.pushButton_2 = QtWidgets.QPushButton(Form)
@@ -365,8 +451,6 @@ class Ui_Form(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    #Form = QtWidgets.QWidget()
     ui = Ui_Form()
-    #ui.setupUi(Form)
     ui.Form.show()
     sys.exit(app.exec_())

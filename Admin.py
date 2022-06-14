@@ -1,6 +1,5 @@
 from Gestionnaire import Gestionnaire
 import mysql.connector
-# test commit and push
 
 
 def get_connection():
@@ -19,10 +18,10 @@ class Admin(Gestionnaire):
         db.commit()
         return cursor.rowcount
 
-    def ajouter_gestionnaire(self, gestionnaire_iD, gestionnaire_nom_complet, gestionnaire_telephone, gestionnaire_address, gestionnaire_email, gestionnaire_password):
+    def ajouter_gestionnaire(self, gestionnaire_iD, gestionnaire_nom_complet, gestionnaire_telephone, gestionnaire_address, gestionnaire_email, gestionnaire_password, path="profil1.png"):
         cursor, db = get_connection()
-        request = "INSERT INTO gestionnaire VALUES (%s, %s, %s, %s, %s, %s)"
-        val = (gestionnaire_iD, gestionnaire_nom_complet, gestionnaire_telephone, gestionnaire_address, gestionnaire_email, gestionnaire_password)
+        request = "INSERT INTO gestionnaire VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        val = (gestionnaire_iD, gestionnaire_nom_complet, gestionnaire_telephone, gestionnaire_address, gestionnaire_email, gestionnaire_password, path)
         cursor.execute(request, val)
         db.commit()
         return cursor.rowcount

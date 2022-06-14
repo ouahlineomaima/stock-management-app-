@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'exporterCommande.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from Data import *
 from PyQt5.QtWidgets import *
@@ -34,7 +26,7 @@ def validate(self):
                     total_unitaire = qt * prix
                     total_global += total_unitaire
                     service = Ui_Form.export_product_list[i].service.nom
-                    msg = f"Produit N°{i}: {nom}, service: {service}, quantité: {qt}, prix unitaire: {prix}, prix total: {total_unitaire} \n"
+                    msg = f"Produit N°{i}: {nom} | service: {service} | quantité: {qt} | prix unitaire: {prix} | prix total: {total_unitaire} \n"
                     file.write(msg)
                     file.close()
                 file = open(filename, "at")
@@ -276,14 +268,6 @@ class Ui_Form(object):
         self.pushButton_20.setObjectName("pushButton_2")
         self.pushButton_20.clicked.connect(lambda: go_back())
 
-        self.pushButton_7 = QtWidgets.QPushButton(Form)
-        self.pushButton_7.setGeometry(QtCore.QRect(540, 0, 44, 42))
-        self.pushButton_7.setStyleSheet("background-image:url(:/newPrefix/PFA Dev/icons8-personne-homme-40.png);\n"
-                                        "background-repeat: no-repeat;\n"
-                                        "background-color:rgb(13,12,60)")
-        self.pushButton_7.setText("")
-        self.pushButton_7.setObjectName("pushButton_7")
-
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -295,15 +279,13 @@ class Ui_Form(object):
         self.label_3.setText(_translate(
             "Form", "Veuillez inserer le chemin absolu du dossier d’exportation"))
         self.pushButton.setText(_translate("Form", "Valider"))
-        self.pushButton_2.setText(_translate("Form", "Dossier Par Defaut"))
+        self.pushButton_2.setText(_translate("Form", "Dossier Par Défaut"))
         self.pushButton_20.setText(_translate("Form", "Retour"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    #Form = QtWidgets.QWidget()
     ui = Ui_Form()
-    #ui.setupUi(Form)
     ui.Form.show()
     sys.exit(app.exec_())

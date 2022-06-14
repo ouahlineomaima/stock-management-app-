@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'seConnecter.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from Data import *
 import hashlib
@@ -132,10 +124,9 @@ class Ui_Form(object):
         self.imageLabel = QtWidgets.QLabel(Form)
         self.imageLabel.setGeometry(QtCore.QRect(520, 90, 161, 141))
         self.imageLabel.setAutoFillBackground(False)
-        self.imageLabel.setStyleSheet("background-image:url(:/newPrefix/supermarcher.jpg);\n"
-                                      "border-radius:40px")
+        self.imageLabel.setStyleSheet("border-radius:40px")
         self.imageLabel.setText("")
-        self.imageLabel.setPixmap(QtGui.QPixmap("D:\inpt\PFA\photos\logo.png"))
+        self.imageLabel.setPixmap(QtGui.QPixmap("logo.png"))
         self.imageLabel.setScaledContents(True)
         self.imageLabel.setObjectName("imageLabel")
 
@@ -170,10 +161,56 @@ class Ui_Form(object):
                                 Ui_Form.admin_index = 1
                                 Ui_Form.gest_index = 2
 
-                                widget.setFixedWidth(adminui.Form.frameGeometry().width())
-                                widget.setFixedHeight(adminui.Form.frameGeometry().height())
-                                widget.setCurrentIndex(Ui_Form.admin_index)
+                                defaultpass = self.id + self.nom
+                                if hashlib.md5(defaultpass.encode()).hexdigest() == self.gest.password:
+                                    msg = QMessageBox()
+                                    msg.setIcon(QMessageBox.Warning)
+
+                                    # setting message for Message Box
+                                    msg.setText("Veuillez changer votre mot de pass par défaut dans la partie profil.")
+
+                                    # setting Message box window title
+                                    msg.setWindowTitle("Avertissement")
+
+                                    # declaring buttons on Message Box
+                                    msg.setStandardButtons(QMessageBox.Ok)
+
+                                    # start the app
+                                    retval = msg.exec_()
+
+                                    widget.setFixedWidth(adminui.Form.frameGeometry().width())
+                                    widget.setFixedHeight(adminui.Form.frameGeometry().height())
+                                    widget.setCurrentIndex(Ui_Form.admin_index)
+                                else:
+                                    widget.setFixedWidth(adminui.Form.frameGeometry().width())
+                                    widget.setFixedHeight(adminui.Form.frameGeometry().height())
+                                    widget.setCurrentIndex(Ui_Form.admin_index)
+
                             else:
+                                defaultpass = self.id + self.nom
+                                if hashlib.md5(defaultpass.encode()).hexdigest() == self.gest.password:
+                                    msg = QMessageBox()
+                                    msg.setIcon(QMessageBox.Warning)
+
+                                    # setting message for Message Box
+                                    msg.setText("Veuillez changer votre mot de pass par défaut dans la partie profil.")
+
+                                    # setting Message box window title
+                                    msg.setWindowTitle("Avertissement")
+
+                                    # declaring buttons on Message Box
+                                    msg.setStandardButtons(QMessageBox.Ok)
+
+                                    # start the app
+                                    retval = msg.exec_()
+
+                                    widget.setFixedWidth(adminui.Form.frameGeometry().width())
+                                    widget.setFixedHeight(adminui.Form.frameGeometry().height())
+                                    widget.setCurrentIndex(Ui_Form.admin_index)
+                                else:
+                                    widget.setFixedWidth(adminui.Form.frameGeometry().width())
+                                    widget.setFixedHeight(adminui.Form.frameGeometry().height())
+                                    widget.setCurrentIndex(Ui_Form.admin_index)
                                 widget.setFixedWidth(adminui.Form.frameGeometry().width())
                                 widget.setFixedHeight(adminui.Form.frameGeometry().height())
                                 widget.setCurrentIndex(Ui_Form.admin_index)
@@ -184,7 +221,6 @@ class Ui_Form(object):
                             self.passwordfield.setText("")
                             affichageGestionnaire.Ui_Form.gest_id = self.id
                             affichageGestionnaire.Ui_Form.widget = widget
-                            #affichageGestionnaire.Ui_Form.widget.addWidget(loginui.Form)
                             affichageGestionnaire.Ui_Form.loginheight = loginui.Form.frameGeometry().height()
                             affichageGestionnaire.Ui_Form.loginwidth = loginui.Form.frameGeometry().width()
                             gestui = affichageGestionnaire.Ui_Form()
@@ -194,13 +230,46 @@ class Ui_Form(object):
                                 Ui_Form.gest_index = 1
                                 Ui_Form.admin_index = 2
 
-                                widget.setFixedWidth(gestui.Form.frameGeometry().width())
-                                widget.setFixedHeight(gestui.Form.frameGeometry().height())
-                                widget.setCurrentIndex(Ui_Form.gest_index)
+                                defaultpass = self.id + self.nom
+                                if hashlib.md5(defaultpass.encode()).hexdigest() == self.gest.password:
+                                    msg = QMessageBox()
+                                    msg.setIcon(QMessageBox.Warning)
+
+                                    # setting message for Message Box
+                                    msg.setText("Veuillez changer votre mot de pass par défaut dans la partie profil.")
+
+                                    # setting Message box window title
+                                    msg.setWindowTitle("Avertissement")
+
+                                    # declaring buttons on Message Box
+                                    msg.setStandardButtons(QMessageBox.Ok)
+
+                                    # start the app
+                                    retval = msg.exec_()
+
+                                    widget.setFixedWidth(gestui.Form.frameGeometry().width())
+                                    widget.setFixedHeight(gestui.Form.frameGeometry().height())
+                                    widget.setCurrentIndex(Ui_Form.gest_index)
                             else:
-                                widget.setFixedWidth(gestui.Form.frameGeometry().width())
-                                widget.setFixedHeight(gestui.Form.frameGeometry().height())
-                                widget.setCurrentIndex(Ui_Form.gest_index)
+                                defaultpass = self.id + self.nom
+                                if hashlib.md5(defaultpass.encode()).hexdigest() == self.gest.password:
+                                    msg = QMessageBox()
+                                    msg.setIcon(QMessageBox.Warning)
+
+                                    # setting message for Message Box
+                                    msg.setText("Veuillez changer votre mot de pass par défaut dans la partie profil.")
+
+                                    # setting Message box window title
+                                    msg.setWindowTitle("Avertissement")
+
+                                    # declaring buttons on Message Box
+                                    msg.setStandardButtons(QMessageBox.Ok)
+
+                                    # start the app
+                                    retval = msg.exec_()
+                                    widget.setFixedWidth(gestui.Form.frameGeometry().width())
+                                    widget.setFixedHeight(gestui.Form.frameGeometry().height())
+                                    widget.setCurrentIndex(Ui_Form.gest_index)
 
                     else:  # wrong passwd
                         msg = QMessageBox()
@@ -261,17 +330,6 @@ class Ui_Form(object):
         self.label_8.setText(_translate("Form", "Ou&Ta"))
         self.label_9.setText(_translate("Form", "Supermarket"))
 
-"""
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
-"""
-#if __name__ == "__main__":
 app = QApplication(sys.argv)
 widget = QtWidgets.QStackedWidget()
 
